@@ -19,3 +19,48 @@ class Customer(models.Model):
 
     def __str__(self):
         return self.name
+    
+class Doctor(models.Model):
+
+    genderChoices = (
+        ("Male", "Male"),
+        ("Female", "Female"),
+    )
+
+    specialisationChoices = (
+        ("oncology", "oncology"),
+        ("nephrology", "nephrology"),
+        ("neurology", "neurology"),
+        ("cardiology", "cardiology"),
+        ("gastroenterology", "gastroenterology"),
+    )
+
+    hospitalNameChoices = (
+        ("star hospitals", "star hospitals"),
+        ("yashoda hospitals", "yashoda hospitals"),
+        ("apollo hospitals", "apollo hospitals"),
+        ("kim's hospitals", "kim's hospitals"),
+        ("care hospitals", "care hospitals"),
+    )
+
+    branchChoices = (
+        ("banjara Hills", "banjara Hills"),
+        ("secunderabad", "secunderabad"),
+        ("jubilee Hills", "jubilee Hills"),
+        ("malakpet", "malakpet"),
+        ("gachibowli", "gachibowli"),
+    )
+
+    doctorName = models.CharField(max_length=100, default=None)
+    email = models.EmailField(max_length=100, default=None)
+    phoneNumber = models.CharField(max_length=20, default=None)
+    age=models.IntegerField(default=None)
+    gender=models.CharField(choices=genderChoices, max_length=6, default=None)
+    specialisation=models.CharField(choices=specialisationChoices, max_length=30, default=None)
+    hospitalName=models.CharField(choices=hospitalNameChoices, max_length=30, default=None)
+    branch=models.CharField(choices=branchChoices, max_length=30, default=None)
+    time=models.CharField(max_length=30, default=None)
+    password=models.CharField(max_length=20, default=None)
+
+    def __str__(self):
+        return self.doctorName
