@@ -1,5 +1,7 @@
 from django.db import models
 
+# Hello Rohan
+
 # Create your models here.
 class Customer(models.Model):
 
