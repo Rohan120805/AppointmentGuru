@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form action="" method="post">
+        {% csrf_token %}
+        Enter your Name: <input type="text" name="name" required><br>
+        {% if name == "" %}
+            <p style="color: red;">**Please enter your name**</p>
+        {% endif %}
+        Enter your Email: <input type="text" name="email" required><br>
+        {% if email_exists %}
+            <p style="color: red;">**Email already exists**</p>
+        {% endif %}
+        Enter your Phone Number: <input type="text" name="phNum" required><br>
+        {% if phNum_exists %}
+            <p style="color: red;">**Phone number already exists**</p>
+        {% endif %}
+        Enter your Age: <input type="number" name="age" required><br>
+        <label for="gender">Enter your gender:</label>
+        <select id="gender" name="gender" required>
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+        </select><br>
+        Enter your Specialization: <input type="text" name="specialty" required><br>
+        Enter your Hospital Name: <input type="text" name="hospital" required><br>
+        Enter your Password: <input type="text" name="pwd" required><br>
+        <button class="button" type="submit">Sign Up</button>
+    </form>
+{% endblock %}

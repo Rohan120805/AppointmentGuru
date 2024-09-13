@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Appointment</title>
+    <style>
+        /* Add some basic styling to make the form look better */
+        body {
+            font-family: Arial, sans-serif;
+        }
+        form {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        input[type="submit"]:hover {
+            background-color: #3e8e41;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f0f0f0;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Book Appointment</h1>
+    <form action="{% url 'bookAppointment' %}" method="post">
+        {% csrf_token %}
+        <label for="hosName">Choose the Hospital Name:</label>
+        <select name="hosName" id="hosName">
+            <option value="None">None</option>
+            <option value="star hospitals">Star Hospitals</option>
+            <option value="yashoda hospitals">Yashoda Hospitals</option>
+            <option value="apollo hospitals">Apollo Hospitals</option>
+            <option value="kim's hospitals">Kim's Hospitals</option>
+            <option value="care hospitals">Care Hospitals</option>
+        </select>
+        <span id="selected-hosName"></span>
+        <br>
+        <label for="branch">Choose the Hospital Location:</label>
+        <select name="branch" id="branch">
+            <option value="None">None</option>
+            <option value="banjara Hills">Banjara Hills</option>
+            <option value="secunderabad">Secunderabad</option>
+            <option value="jubilee Hills">Jubilee Hills</option>
+            <option value="malakpet">Malakpet</option>
+            <option value="gachibowli">Gachibowli</option>
+        </select>
+        <span id="selected-branch"></span>
+        <br>
+        <label for="specialization">Choose the value you want to change:</label>
+        <select name="specialization" id="specialization">
+            <option value="None">None</option>
+            <option value="oncology">Oncology</option>
+            <option value="nephrology">Nephrology</option>
+            <option value="neurology">Neurology</option>
+            <option value="cardiology">Cardiology</option>
+            <option value="gastroenterology">Gastroenterology</option>
+        </select>
+        <span id="selected-specialization"></span>
+        <br>
+        <input type="submit" value="Filter">
+    </form>
+
+    <form action="{% url 'bookAppointment' %}" method="post">
+        {% csrf_token %}
+        <label for="doctor">Select Doctor:</label>
+        <select name="doctor" id="doctor">
+            {% for doc in docs.doctorName.values %}
+            <option value={{doc}}>{{doc}}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <input type="submit" value="Book Appointment">
+    </form>
+
+    <div id="result">
+        <p id="appointment-message">{{result | safe}}</p>
+    </div>
+
+    <script>
+        // Add some JavaScript to make the form more interactive
+        document.addEventListener("DOMContentLoaded", function() {
+            const selects = document.querySelectorAll("select");
+            selects.forEach(function(select) {
+                select.addEventListener("change", function(event) {
+                    const selectedValue = event.target.value;
+                    const selectedText = event.target.options[event.target.selectedIndex].text;
+                    const id = event.target.id;
+                    document.getElementById(`selected-${id}`).innerHTML = `Selected ${id}: ${selectedText}`;
+                });
+            });
+        });
+    </script>
+</body>
+</html>

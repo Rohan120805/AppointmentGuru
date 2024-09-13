@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+    </head>
+    <body>
+        {{result | safe}}
+        <form action="{% url 'selectDoctor' %}" method="post">
+            {% csrf_token %}
+            <label for="choice">Select Doctor:</label>
+                <select name="doctor" id="doctor">
+            {% for doc in docs.doctorName.values %}
+                <option value={{doc}}>{{doc}}</option>
+            {% endfor %}
+                </select>
+            Enter Date: <input type="date" name="begin" required placeholder="yyyy-dd-mm" value="" min={{today}} max="2030-12-31">
+            <input type="submit">
+        </form>
+</body>
+</html>
