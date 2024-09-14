@@ -252,8 +252,6 @@ def bookAppointment(request):
         branch=str(request.POST.get('branch'))
         specialization=(request.POST.get('specialization'))
         doctor=(request.POST.get('doctor'))
-        appointmentDate=str(request.POST.get('appointmentDate'))
-        slot=str(request.POST.get('slot'))
         docData=UserHomePage.doctors(hosName, branch, specialization)
         dfa=docData
         docData=docData[["doctorName", "hospitalName", "branch", "time"]]
@@ -262,33 +260,25 @@ def bookAppointment(request):
         x=str(date.today())
         if doctor:
             docDetails=DataOfDoc[DataOfDoc["doctorName"]==doctor].drop_duplicates().to_records(index=False).tolist()
-            #print(docDetails[0][8])
+            request.session['docDetails']=docDetails
             avSlots=list(map(str, docDetails[0][8].split("/")))
             avSlots=pd.DataFrame(avSlots)
-            #print(avSlots)
             #appointmentDate=str(request.POST.get('appointmentDate'))
             #slot=str(request.POST.get("slot"))
-            print(slot)
-            print(appointmentDate)
-            return render(request, 'bookAppointment.html', {"result":docs, "docs":dfa, "today":x, "avSlots":avSlots, "appointmentDate": appointmentDate, "slot": slot})  # Pass appointmentDate and slot to the template
-        return render(request, 'bookAppointment.html', {"result":docs, "docs":dfa, "today":x, "avSlots":avSlots, "appointmentDate": appointmentDate, "slot": slot})  # Pass appointmentDate and slot to the template
+            return render(request, 'slot.html', {"today":x, "avSlots":avSlots, 'docDetails':docDetails})
+        return render(request, 'bookAppointment.html', {"result":docs, "docs":dfa, "today":x, "avSlots":avSlots})
     return render(request, 'bookAppointment.html', {"details":details, "docs":dfa, "result":docs})
 
-def selDoc(request):
+def selectSlot(request):
     details = request.session.get('details')
+    docDetails = request.session.get('docDetails')
     if request.method == 'POST':
-        doctor=(request.POST.get('doctor'))
-        dt=str(request.POST.get('dt'))
-        #ts=str(request.POST.get('ts'))
-        df=pd.read_csv("AppointmentGuru/doctors.csv")
-        df=df[df['doctorName']==doctor]
-        all_slots = []
-        for time in df['time']:
-            slots = list(time.split('/'))
-            all_slots.append(slots)
-        df1=pd.DataFrame(all_slots)
-        #print(df1)
-    return render(request, 'timeSlot.html', {"details":df1})
+        appointmentDate=str(request.POST.get('appointmentDate'))
+        slot=str(request.POST.get('slot'))
+        print(appointmentDate)
+        print(slot)
+        return render(request, 'success.html', {"choice":appointmentDate, "value":slot})
+    return render(request, 'slot.html', {"details":details})
 
 def doctorAppointments(request):
     details = request.session.get('ddetails')

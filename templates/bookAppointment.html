@@ -115,19 +115,6 @@
         <input type="submit" value="Select">
     </form>
 
-    <form action="{% url 'bookAppointment' %}">
-        {% csrf_token %}
-        <label for="Book">Book Appointment</label>
-        Select Date:<input type="date" id="appointmentDate"><br>
-        Select Slot:
-        <select name="slot" id="slot">
-            {% for s in avSlots.0 %}
-                <option value={{s}}>{{s}}</option>
-            {% endfor %}
-        </select>
-        <input type="submit" value="Book Appointment">
-    </form>
-
     <script>
         // Add some JavaScript to make the form more interactive
         document.addEventListener("DOMContentLoaded", function() {
