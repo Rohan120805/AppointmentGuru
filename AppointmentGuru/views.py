@@ -42,10 +42,10 @@ class LoginPage:
 class UserHomePage:
     
     def alpha(details, field, data):
-        df = pd.read_csv("AppointmentGuru/users1.csv")
+        df = pd.read_csv("AppointmentGuru/users.csv")
         idx = df[(df["phoneNumber"] == details[2])].index
         df.loc[idx, field] = data
-        df.to_csv("AppointmentGuru/users1.csv", index=False)
+        df.to_csv("AppointmentGuru/users.csv", index=False)
 
     def yourAppointments(details):#displays all the appointments
         df=pd.read_csv("AppointmentGuru/users/"+str(details[2])+".csv")
@@ -105,72 +105,12 @@ class DoctorHomePage:
         print(df)
         return df.to_html()
 
-    def alpha(self, field, data):
-        df=pd.read_csv("doctors.csv")
-        a=df[df["phoneNumber"] == self.details[2]].index
-        df.loc[a[0], field] = data
-        df.to_csv("doctors.csv", index=False)
+    def alpha(details, field, data):
+        df = pd.read_csv("AppointmentGuru/doctors.csv")
+        idx = df[(df["phoneNumber"] == details[2])].index
+        df.loc[idx, field] = data
+        df.to_csv("AppointmentGuru/doctors.csv", index=False)
 
-    def editDetails(self):
-        a=int(input("Enter:\n1::User Name\n2::Email\n3::Phone Number\n4::Age\n5::Gender\n6::specialisation\n7::hospitalName\n8::branch\n9::Password"))
-        df=pd.read_csv("doctors.csv")
-        #doctorName,email,phoneNumber,age,gender,specialisation,hospitalName,branch,time,password
-        match(a):
-            case 1:
-                x=input("Enter your new Username")
-                DoctorHomePage(self.details).alpha("doctorName", x)
-                print("Profile updated successfully")
-                self.details[0]=x
-            case 2:
-                x=input("Enter your new Email")
-                if all([x.endswith("@gmail.com"), x not in df]):
-                    DoctorHomePage(self.details).alpha("email", x)
-                    self.details[1]=x
-                    print("Profile updated successfully")
-                elif x in df:
-                    print("Email exists in database. Please check given details")
-                else:
-                    print("Invalid Email Id")
-                    return DoctorHomePage(self.details).editDetails()
-            case 3:
-                x=input("Enter your new Phone Number")
-                if all([len(x)!=10, x in df, x.isalnum() is False]):
-                    print("Invalid Phone Number")
-                    return DoctorHomePage(self.details).editDetails()
-                DoctorHomePage(self.details).alpha("phoneNumber", int(x))
-                os.rename(str(self.details[2])+".csv", x+".csv")
-                self.details[2]=x
-                print("Profile updated successfully")
-            case 4:
-                x=input("Enter your new Age")
-                DoctorHomePage(self.details).alpha("age", x)
-                self.details[3]=x
-                print("Profile updated successfully")
-            case 5:
-                x=input("Enter your new Gender")
-                DoctorHomePage(self.details).alpha("gender", x)
-                self.details[4]=x
-                print("Profile updated successfully")
-            case 6:
-                x=input("Enter your new Specialisation")
-                DoctorHomePage(self.details).alpha("specialisation", x)
-                self.details[5]=x
-                print("Profile updated successfully")
-            case 7:
-                x=input("Enter your new Hospital Name")
-                DoctorHomePage(self.details).alpha("hospitalName", x)
-                self.details[6]=x
-                print("Profile updated successfully")
-            case 8:
-                x=input("Enter your new Hospital Branch")
-                DoctorHomePage(self.details).alpha("branch", x)
-                self.details[7]=x
-                print("Profile updated successfully")
-            case 9:
-                x=input("Enter your new Password")
-                DoctorHomePage(self.details).alpha("password", x)
-                self.details[8]=x
-                print("Profile updated successfully")
 
 def add_user(request):
     #render(request, 'add_user.html')
@@ -302,27 +242,36 @@ def uEditDetails(request):
 
 def bookAppointment(request):
     details = request.session.get('details')
-    #docs=pd.read_csv("AppointmentGuru/doctors.csv")
+    DataOfDoc=pd.read_csv("AppointmentGuru/doctors.csv")
     docData=UserHomePage.doctors("None", "None", "None")
     docs=docData.to_html()
     dfa=docData
+    avSlots=None
     if request.method == 'POST':
         hosName=str(request.POST.get('hosName'))
         branch=str(request.POST.get('branch'))
         specialization=(request.POST.get('specialization'))
         doctor=(request.POST.get('doctor'))
-        #sending docList to front
+        appointmentDate=str(request.POST.get('appointmentDate'))
+        slot=str(request.POST.get('slot'))
         docData=UserHomePage.doctors(hosName, branch, specialization)
         dfa=docData
         docData=docData[["doctorName", "hospitalName", "branch", "time"]]
         request.session['docData'] = docData.to_dict()
         docs = docData.to_html()
         x=str(date.today())
-        while doctor:
-            appointmentDate=str(request.POST.get('appointmentDate'))
-            slot=str(request.POST.get("slot"))
-            
-        return render(request, 'bookAppointment.html', {"result":docs, "docs":dfa, "today":x})
+        if doctor:
+            docDetails=DataOfDoc[DataOfDoc["doctorName"]==doctor].drop_duplicates().to_records(index=False).tolist()
+            #print(docDetails[0][8])
+            avSlots=list(map(str, docDetails[0][8].split("/")))
+            avSlots=pd.DataFrame(avSlots)
+            #print(avSlots)
+            #appointmentDate=str(request.POST.get('appointmentDate'))
+            #slot=str(request.POST.get("slot"))
+            print(slot)
+            print(appointmentDate)
+            return render(request, 'bookAppointment.html', {"result":docs, "docs":dfa, "today":x, "avSlots":avSlots, "appointmentDate": appointmentDate, "slot": slot})  # Pass appointmentDate and slot to the template
+        return render(request, 'bookAppointment.html', {"result":docs, "docs":dfa, "today":x, "avSlots":avSlots, "appointmentDate": appointmentDate, "slot": slot})  # Pass appointmentDate and slot to the template
     return render(request, 'bookAppointment.html', {"details":details, "docs":dfa, "result":docs})
 
 def selDoc(request):
@@ -354,3 +303,12 @@ def todayAppointments(request):
     print(df)
     html_content = df.to_html()
     return HttpResponse(html_content)
+
+def dEditDetails(request):
+    details = request.session.get('ddetails')
+    if request.method == 'POST':
+        choice = str(request.POST.get('choice'))
+        value = request.POST.get('value')
+        DoctorHomePage.alpha(details, choice, value)
+        return render(request, 'success.html', {"success":"Details updated in database", "choice":choice, "value":value})
+    return render(request, 'doctorEditDetails.html', {"details":details})
