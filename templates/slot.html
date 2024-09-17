@@ -10,13 +10,14 @@
     <form action="{% url 'selectSlot' %}" method='post'>
         {% csrf_token %}
         <label for="Book">Book Appointment</label>
-        Select Date:<input type="date" name="appointmentDate" value="{{ today }}"><br>
+        Select Date:<input type="date" name="appointmentDate" value="{{ tomorrow }}" min="{{ tomorrow }}"><br>
         Select Slot:
         <select name="slot" id="slot">
             {% for s in avSlots.0 %}
                 <option value={{s}}>{{s}}</option>
             {% endfor %}
         </select>
+        <br>
         <input type="submit" value="Book Appointment">
     </form>
 </body>

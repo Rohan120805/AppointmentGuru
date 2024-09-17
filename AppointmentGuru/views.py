@@ -4,7 +4,7 @@ from django.contrib import messages
 import csv
 import pandas as pd
 import os
-from datetime import date
+from datetime import date, timedelta
 
 def home(request):
   return render(request,'home.html',{'name':'Rohan'})
@@ -245,7 +245,6 @@ def bookAppointment(request):
     DataOfDoc=pd.read_csv("AppointmentGuru/doctors.csv")
     docData=UserHomePage.doctors("None", "None", "None")
     docs=docData.to_html()
-    dfa=docData
     avSlots=None
     if request.method == 'POST':
         hosName=str(request.POST.get('hosName'))
@@ -253,7 +252,6 @@ def bookAppointment(request):
         specialization=(request.POST.get('specialization'))
         doctor=(request.POST.get('doctor'))
         docData=UserHomePage.doctors(hosName, branch, specialization)
-        dfa=docData
         docData=docData[["doctorName", "hospitalName", "branch", "time"]]
         request.session['docData'] = docData.to_dict()
         docs = docData.to_html()
@@ -265,9 +263,9 @@ def bookAppointment(request):
             avSlots=pd.DataFrame(avSlots)
             #appointmentDate=str(request.POST.get('appointmentDate'))
             #slot=str(request.POST.get("slot"))
-            return render(request, 'slot.html', {"details":details, "today":str(date.today()), "avSlots":avSlots, 'docDetails':docDetails})
-        return render(request, 'bookAppointment.html', {"result":docs, "docs":dfa, "today":str(date.today()), "avSlots":avSlots})
-    return render(request, 'bookAppointment.html', {"details":details, "docs":dfa, "result":docs})
+            return render(request, 'slot.html', {"details":details, "today":str(date.today()), "tomorrow":date.today()+timedelta(days=1), "avSlots":avSlots, 'docDetails':docDetails})
+        return render(request, 'bookAppointment.html', {"result":docs, "docs":docData, "today":str(date.today()), "avSlots":avSlots})
+    return render(request, 'bookAppointment.html', {"details":details, "docs":docData, "result":docs})
 
 def selectSlot(request):
     details = request.session.get('details')
@@ -277,8 +275,9 @@ def selectSlot(request):
         slot=request.POST.get('slot')
         print(appointmentDate)
         print(slot)
+        print(pd.DataFrame(request.session.get('avSlots')))
         return render(request, 'success.html', {"choice":appointmentDate, "value":slot})
-    return render(request, 'slot.html', {"details":details, "today":str(date.today()), "avSlots":pd.DataFrame(request.session.get('avSlots')), 'docDetails':docDetails})
+    return render(request, 'slot.html', {"details":details, "today":str(date.today()), "tomorrow":date.today()+timedelta(days=1), "avSlots":pd.DataFrame(request.session.get('avSlots')), 'docDetails':docDetails})
     #return render(request, 'slot.html', {"details":details})
 
 def doctorAppointments(request):
