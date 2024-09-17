@@ -7,10 +7,10 @@
 </head>
 <body>
     <h1>{{details}}</h1>
-    <form action="{% url 'selectSlot' %}">
+    <form action="{% url 'selectSlot' %}" method='post'>
         {% csrf_token %}
         <label for="Book">Book Appointment</label>
-        Select Date:<input type="date" id="appointmentDate"><br>
+        Select Date:<input type="date" name="appointmentDate" value="{{ today }}"><br>
         Select Slot:
         <select name="slot" id="slot">
             {% for s in avSlots.0 %}

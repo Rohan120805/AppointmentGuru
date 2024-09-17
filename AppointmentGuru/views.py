@@ -257,28 +257,29 @@ def bookAppointment(request):
         docData=docData[["doctorName", "hospitalName", "branch", "time"]]
         request.session['docData'] = docData.to_dict()
         docs = docData.to_html()
-        x=str(date.today())
         if doctor:
             docDetails=DataOfDoc[DataOfDoc["doctorName"]==doctor].drop_duplicates().to_records(index=False).tolist()
             request.session['docDetails']=docDetails
             avSlots=list(map(str, docDetails[0][8].split("/")))
+            request.session['avSlots']=avSlots
             avSlots=pd.DataFrame(avSlots)
             #appointmentDate=str(request.POST.get('appointmentDate'))
             #slot=str(request.POST.get("slot"))
-            return render(request, 'slot.html', {"today":x, "avSlots":avSlots, 'docDetails':docDetails})
-        return render(request, 'bookAppointment.html', {"result":docs, "docs":dfa, "today":x, "avSlots":avSlots})
+            return render(request, 'slot.html', {"details":details, "today":str(date.today()), "avSlots":avSlots, 'docDetails':docDetails})
+        return render(request, 'bookAppointment.html', {"result":docs, "docs":dfa, "today":str(date.today()), "avSlots":avSlots})
     return render(request, 'bookAppointment.html', {"details":details, "docs":dfa, "result":docs})
 
 def selectSlot(request):
     details = request.session.get('details')
     docDetails = request.session.get('docDetails')
     if request.method == 'POST':
-        appointmentDate=str(request.POST.get('appointmentDate'))
-        slot=str(request.POST.get('slot'))
+        appointmentDate=request.POST.get('appointmentDate')
+        slot=request.POST.get('slot')
         print(appointmentDate)
         print(slot)
         return render(request, 'success.html', {"choice":appointmentDate, "value":slot})
-    return render(request, 'slot.html', {"details":details})
+    return render(request, 'slot.html', {"details":details, "today":str(date.today()), "avSlots":pd.DataFrame(request.session.get('avSlots')), 'docDetails':docDetails})
+    #return render(request, 'slot.html', {"details":details})
 
 def doctorAppointments(request):
     details = request.session.get('ddetails')
