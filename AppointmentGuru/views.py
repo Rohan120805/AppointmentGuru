@@ -73,22 +73,6 @@ class UserHomePage:
         print(doc)
         return doc
     
-    def bookAppointment(doc_list):
-        #t=list(map(str, doc_list[docName-1][-2].split("/")))
-        #time=int(input(f"Select time"))
-        #dt=input("Enter Date")
-        #User:userName,email,phoneNumber,age,gender,password
-        #Doctor:doctorName,email,phoneNumber,age,gender,specialisation,hospitalName,branch,time,password
-        with open("doctors/"+str(doc_list[docName-1][2])+".csv", 'a', newline='\n') as file:
-            #appointmentDate,time,patientName,gender,mailId
-            writer = csv.writer(file)
-            writer.writerow([str(dt), str(t[time-1]), str(details[0]), str(details[-2]), str(details[1])])
-        
-        with open("users/"+str(details[2])+".csv", 'a', newline="\n") as file:
-            #appointmentDate,time,doctorName,hospitalName,branch
-            writer = csv.writer(file)
-            writer.writerow([str(dt), str(t[time-1]), str(doc_list[docName-1][0]), str(doc_list[docName-1][6]), str(doc_list[docName-1][7])])
-
 
 class DoctorHomePage:
     #doctorName,email,phoneNumber,age,gender,specialisation,hospitalName,branch,time,password
@@ -148,7 +132,7 @@ def add_doctor(request):
         email_exists = False
         phNum_exists = False
         name = request.POST.get('name')
-        email = SignupPage.checkEmail(request.POST.get('email'))
+        email = request.POST.get('email')
         phNum = request.POST.get('phNum')
         age = int(request.POST.get('age'))
         gender = request.POST.get('gender')
@@ -178,7 +162,6 @@ def add_doctor(request):
 def uLogin(request):
     render(request, 'userLogin.html')
     if request.method == 'POST':
-        # Handle form submission
         authid = str(request.POST.get('authid'))
         pwd = str(request.POST.get('pwd'))
         user_details = LoginPage().fetchData('AppointmentGuru/users.csv', authid)
@@ -191,13 +174,8 @@ def uLogin(request):
                 return render(request, "userHome.html", {'result': user_data})
             else:
                 return render(request, 'userLogin.html', {'error': True})
-                #messages.error(request, 'Invalid password. Please try again.')
-                #return render(request, "warning.html", {"warning": "Wrong Password"})
         else:
             return render(request, 'userLogin.html', {'invalid_authid': True})
-            #messages.error(request, 'User not found. Please check the details.')
-            #return render(request, "warning.html", {"warning": "User not found. Please check the details."})
-    #else:
     return render(request, 'userLogin.html')
 
 def dLogin(request):
@@ -216,18 +194,12 @@ def dLogin(request):
                 return render(request, "docHome.html", {'result': doctor_data})
             else:
                 return render(request, 'docLogin.html', {'error': True})
-                #messages.error(request, 'Invalid password. Please try again.')
-                #return render(request, "warning.html", {"warning": "Wrong Password"})
         else:
             return render(request, 'docLogin.html', {'invalid_authid': True})
-            #messages.error(request, 'User not found. Please check the details.')
-            #return render(request, "warning.html", {"warning": "Doctor not found. Please check the details."})
-    #else:
     return render(request, 'docLogin.html')
 
 def userAppointments(request):
     details = request.session.get('details')
-    #data=UserHomePage.yourAppointments(details)
     df=pd.read_csv("AppointmentGuru/users/"+str(details[2])+".csv")
     return render(request, "yourAppointments.html", {'data': df.to_html()})
 
