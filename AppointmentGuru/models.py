@@ -3,22 +3,6 @@ from django.db import models
 # Hello Rohan
 
 # Create your models here.
-class Customer(models.Model):
-
-    gender_choices = (
-        ("Male", "Male"),
-        ("Female", "Female"),
-    )
-
-    name = models.CharField(max_length=100, default=None)
-    email = models.EmailField(max_length=100, default=None)
-    phoneNumber = models.CharField(max_length=20, default=None)
-    age=models.IntegerField(default=None)
-    gender=models.CharField(choices=gender_choices, max_length=6, default=None)
-    password=models.CharField(max_length=20, default=None)
-
-    def __str__(self):
-        return self.name
     
 class Doctor(models.Model):
 
@@ -61,6 +45,25 @@ class Doctor(models.Model):
     branch=models.CharField(choices=branchChoices, max_length=30, default=None)
     time=models.CharField(max_length=30, default=None)
     password=models.CharField(max_length=20, default=None)
+#    customer = models.ManyToManyField(Customer)
 
     def __str__(self):
         return self.doctorName
+
+class Customer(models.Model):
+
+    gender_choices = (
+        ("Male", "Male"),
+        ("Female", "Female"),
+    )
+
+    name = models.CharField(max_length=100, default=None)
+    email = models.EmailField(max_length=100, default=None)
+    phoneNumber = models.CharField(max_length=20, default=None)
+    age=models.IntegerField(default=None)
+    gender=models.CharField(choices=gender_choices, max_length=6, default=None)
+    password=models.CharField(max_length=20, default=None)
+    doctor = models.ManyToManyField(Doctor)
+
+    def __str__(self):
+        return self.name

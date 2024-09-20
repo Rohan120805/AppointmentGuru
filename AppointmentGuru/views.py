@@ -5,6 +5,7 @@ import csv
 import pandas as pd
 import os
 from datetime import date, timedelta
+from .models import Customer, Doctor
 
 def home(request):
   return render(request,'home.html',{'name':'Rohan'})
@@ -253,9 +254,14 @@ def selectSlot(request):
     #return render(request, 'slot.html', {"details":details})
 
 def doctorAppointments(request):
-    details = request.session.get('ddetails')
-    data=DoctorHomePage.yourAppointments(details)
-    return render(request, "yourAppointments.html", {'data': data})
+    # details = request.session.get('ddetails')
+    # data=DoctorHomePage.yourAppointments(details)
+    doctors = Doctor.objects.all()
+    print(doctors)
+    context = {
+        'doctors': doctors
+    }
+    return render(request, "yourAppointments.html", context)
 
 def todayAppointments(request):
     details = request.session.get('ddetails')

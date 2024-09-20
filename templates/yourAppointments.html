@@ -19,8 +19,25 @@
 </head>
 <body>
     <h1>Your Appointments</h1>
-    <div>
-        {{ data | safe }}
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr style="text-align: center">
+                    <th> Name </th>
+                    <th> Branch </th>
+                    <th> Age </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for doctor in doctors %}
+                <tr style="text-align: center">
+                    <td> {{doctor.doctorName}} </td>
+                    <td> {{doctor.hospitalName}} </td>
+                    <td> {{doctor.age}} </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </body>
 </html>
