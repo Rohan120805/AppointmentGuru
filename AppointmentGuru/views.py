@@ -126,10 +126,9 @@ def add_user(request):
     return render(request, 'add_user.html')
 
 def add_doctor(request):
-    render(request, 'add_doctor.html')
     if request.method == 'POST':
-        email_exists = False
-        phNum_exists = False
+        invalid = False
+        doctorExists = False
         name = request.POST.get('name')
         email = request.POST.get('email')
         phNum = request.POST.get('phNum')
@@ -140,22 +139,20 @@ def add_doctor(request):
         branch = request.POST.get('branch')
         time = request.POST.get('time')
         pwd = request.POST.get('pwd')
-        with open('AppointmentGuru/doctors.csv', 'r') as csvfile:
-            reader = csv.reader(csvfile)
-            for row in reader:
-                if row[1] == email:
-                    email_exists = True
-                if row[2] == phNum:
-                    phNum_exists = True
-        if any([email_exists, phNum_exists]):
-            return render(request, 'add_doctor.html', {'email_exists': email_exists, 'phNum_exists': phNum_exists})
+        if not str(email).endswith("@gmail.com"):
+            invalid = True
         else:
-            with open("AppointmentGuru/doctors.csv", 'a', newline='\n') as file:
-                    writer = csv.writer(file)
-                    writer.writerow([name, email, phNum, age, gender, spec, hosName, branch, time, pwd])
-            with open("AppointmentGuru/doctors/"+str(phNum)+".csv", 'w') as file:
-                file.write("appointmentDate,time,patientName,gender,mailId")                
-            return render(request, 'success.html', {"success":"Details updated in database"})
+            try:
+                if Doctor.objects.get(email=email) or Doctor.objects.get(phoneNumber=phNum):
+                    doctorExists = True
+            except:
+                doctorExists = False
+        if invalid or doctorExists:
+            return render(request, 'add_doctor.html', {'invalid': invalid, 'doctorExists': doctorExists})
+        else:
+            doctor = Doctor(doctorName=name, email=email, phoneNumber=phNum, age=age, gender=gender, specialisation=spec, hospitalName=hosName, branch=branch, time=time, password=pwd)
+            doctor.save()
+            return render(request, 'success.html', {"success": "Details updated in database"})
     return render(request, 'add_doctor.html')
 
 def uLogin(request):
