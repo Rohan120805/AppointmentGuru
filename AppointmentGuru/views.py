@@ -111,17 +111,18 @@ def add_user(request):
         pwd = request.POST.get('pwd')
         if not str(uemail).endswith("@gmail.com"):
             invalid = True
-            return render(request, 'add_user.html', {'invalid':invalid, 'userExists':userExists})
         else:
             try:
-               if Customer.objects.get(email=uemail) or Customer.objects.get(phoneNumber=phNum):
-                   print('User exists')
-                   return render(request, 'add_user.html', {'invalid': invalid, 'userExists': userExists})
+                if Customer.objects.get(email=uemail) or Customer.objects.get(phoneNumber=phNum):
+                    userExists = True
             except:
-                userExists=False
-                customer = Customer(name=name, email=uemail, phoneNumber=phNum, age=age, gender=gender, password=pwd)
-                customer.save()
-                return render(request, 'success.html', {"success":"Details updated in database"})
+                userExists = False
+        if invalid or userExists:
+            return render(request, 'add_user.html', {'invalid': invalid, 'userExists': userExists})
+        else:
+            customer = Customer(name=name, email=uemail, phoneNumber=phNum, age=age, gender=gender, password=pwd)
+            customer.save()
+            return render(request, 'success.html', {"success": "Details updated in database"})
     return render(request, 'add_user.html')
 
 def add_doctor(request):
