@@ -63,7 +63,14 @@ class Customer(models.Model):
     age=models.IntegerField(default=None)
     gender=models.CharField(choices=gender_choices, max_length=6, default=None)
     password=models.CharField(max_length=20, default=None)
-    doctor = models.ManyToManyField(Doctor)
 
     def __str__(self):
         return self.name
+    
+class Appointments(models.Model):
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
+    time = models.CharField(default="", max_length=50)
+
+    def __str__(self):
+        return f"{self.customer.name} -> {self.doctor.doctorName}"

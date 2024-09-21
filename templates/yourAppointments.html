@@ -18,6 +18,21 @@
     </style>
 </head>
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-light">
+        <div class="container-fluid">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+              <a class="nav-link" href="{% url 'yourAppointments' %}"><button class='btn btn-danger'>Your Appointments</button></a>
+              <a class="nav-link" href="{% url 'bookAppointment' %}"><button class='btn btn-danger'>Book Appointments</button></a>
+              <a class="nav-link" href="{% url 'userEditDetails' %}"><button class='btn btn-danger'>Edit Details</button></a>
+            </div>
+          </div>
+        </div>
+        <a class="navbar-brand" href="{% url 'home' %}"><button class='btn btn-danger'>Logout</button></a>
+    </nav>
     <h1>Your Appointments</h1>
     <div class="table-responsive">
         <table class="table table-striped table-bordered">

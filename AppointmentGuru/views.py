@@ -1,6 +1,7 @@
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import render, redirect, HttpResponse,   get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
+from django.db import models
 import csv
 import pandas as pd
 import os
@@ -100,31 +101,27 @@ class DoctorHomePage:
 def add_user(request):
     #render(request, 'add_user.html')
     if request.method == 'POST':
-        email_exists = False
-        phNum_exists = False
+        invalid = False
+        userExists = False
         name = request.POST.get('name')
-        email = str(request.POST.get('email'))
+        uemail = str(request.POST.get('email'))
         phNum = str(request.POST.get('phNum'))
         age = int(request.POST.get('age'))
         gender = request.POST.get('gender')
         pwd = request.POST.get('pwd')
-        if not str(email).endswith("@gmail.com"): email_exists = True
-        with open('AppointmentGuru/users.csv', 'r') as csvfile:
-            reader = csv.reader(csvfile)
-            for row in reader:
-                if row[1] == email:
-                    email_exists = True
-                if row[2] == phNum:
-                    phNum_exists = True
-        if any([email_exists, phNum_exists]):
-            return render(request, 'add_user.html', {'email_exists': email_exists, 'phNum_exists': phNum_exists})
+        if not str(uemail).endswith("@gmail.com"):
+            invalid = True
+            return render(request, 'add_user.html', {'invalid':invalid, 'userExists':userExists})
         else:
-            with open("AppointmentGuru/users.csv", 'a', newline='\n') as file:
-                writer = csv.writer(file)
-                writer.writerow([name, email, phNum, age, gender, pwd])
-            with open("AppointmentGuru/users/"+str(phNum)+".csv", 'w') as file:
-                file.write("appointmentDate,time,doctorName,hospitalName,branch")
-            return render(request, 'success.html', {"success":"Details updated in database"})
+            try:
+               if Customer.objects.get(email=uemail) or Customer.objects.get(phoneNumber=phNum):
+                   print('User exists')
+                   return render(request, 'add_user.html', {'invalid': invalid, 'userExists': userExists})
+            except:
+                userExists=False
+                customer = Customer(name=name, email=uemail, phoneNumber=phNum, age=age, gender=gender, password=pwd)
+                customer.save()
+                return render(request, 'success.html', {"success":"Details updated in database"})
     return render(request, 'add_user.html')
 
 def add_doctor(request):
@@ -165,38 +162,60 @@ def uLogin(request):
     if request.method == 'POST':
         authid = str(request.POST.get('authid'))
         pwd = str(request.POST.get('pwd'))
-        user_details = LoginPage().fetchData('AppointmentGuru/users.csv', authid)
-        if user_details:
-            # Validate password
-            user_data = LoginPage().checkpwd(user_details, pwd)
-            if user_data:
-                # Successful login
-                request.session['details'] = user_data
-                return render(request, "userHome.html", {'result': user_data})
+        try:
+            if authid.isalnum():
+                userDetails = Customer.objects.get(phoneNumber=authid, password=pwd)
+            else:
+                userDetails = Customer.objects.get(email=authid, password=pwd)
+            user = {
+            'name': userDetails.name,
+            'email': userDetails.email,
+            'phoneNumber': userDetails.phoneNumber,
+            'age': userDetails.age,
+            'gender': userDetails.gender,
+            }
+        except Exception as e:
+            userDetails=False
+        if userDetails:
+            if userDetails.password==pwd:
+                request.session['user'] = user
+                return render(request, "userHome.html", {'result': user})
             else:
                 return render(request, 'userLogin.html', {'error': True})
         else:
-            return render(request, 'userLogin.html', {'invalid_authid': True})
+            return render(request, 'userLogin.html', {'error': True})
     return render(request, 'userLogin.html')
 
 def dLogin(request):
     render(request, 'docLogin.html')
     if request.method == 'POST':
-        # Handle form submission
         authid = str(request.POST.get('authid'))
         pwd = str(request.POST.get('pwd'))
-        doctor_details = LoginPage().fetchData('AppointmentGuru/doctors.csv', authid)
-        if doctor_details:
-            # Validate password
-            doctor_data = LoginPage().checkpwd(doctor_details, pwd)
-            if doctor_data:
-                # Successful login
-                request.session['ddetails'] = doctor_data
-                return render(request, "docHome.html", {'result': doctor_data})
+        try:
+            if authid.isalnum():
+                doctorDetails = Doctor.objects.get(phoneNumber=authid, password=pwd)
+            else:
+                doctorDetails = Customer.objects.get(email=authid, password=pwd)
+            doctor = {
+            'name': doctorDetails.doctorName,
+            'email': doctorDetails.email,
+            'phoneNumber': doctorDetails.phoneNumber,
+            'age': doctorDetails.age,
+            'gender': doctorDetails.gender,
+            'branch': doctorDetails.branch,
+            'hospitalName': doctorDetails.hospitalName,
+            'specialisation': doctorDetails.specialisation,
+            }
+        except Exception as e:
+            doctorDetails=False
+        if doctorDetails:
+            if doctorDetails.password==pwd:
+                request.session['user'] = doctor
+                return render(request, "docHome.html", {'result': doctor})
             else:
                 return render(request, 'docLogin.html', {'error': True})
         else:
-            return render(request, 'docLogin.html', {'invalid_authid': True})
+            return render(request, 'docLogin.html', {'error': True})
     return render(request, 'docLogin.html')
 
 def userAppointments(request):
@@ -256,7 +275,7 @@ def selectSlot(request):
 def doctorAppointments(request):
     # details = request.session.get('ddetails')
     # data=DoctorHomePage.yourAppointments(details)
-    doctors = Doctor.objects.all()
+    doctors = Doctor.objects.all().filter(specialisation = 'oncology')
     print(doctors)
     context = {
         'doctors': doctors

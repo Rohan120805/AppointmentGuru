@@ -89,11 +89,13 @@
           border: none;
           border-radius: 5px;
           cursor: pointer;
-          transition: background-color 0.2s ease-in-out;
+          transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
       }
 
       .btn:hover {
-          background-color: #0069d9; /* Changed to a darker button color on hover */
+          background-color: #006F94; /* Changed to a darker button color on hover */
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+          transform: scale(1.1);
       }
     </style>
 </head>
@@ -113,7 +115,7 @@
         </div>
         <a class="navbar-brand" href="{% url 'home' %}"><button class='btn btn-danger'>Logout</button></a>
       </nav>
-      <h1>Welcome {{result.0}}.</h1>
+      <h1>Welcome {{result.name}}.</h1>
       <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4"></script>
 </body>
 </html>
