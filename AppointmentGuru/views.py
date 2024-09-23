@@ -20,31 +20,25 @@ class UserHomePage:
         df.loc[idx, field] = data
         df.to_csv("AppointmentGuru/users.csv", index=False)
 
-    def yourAppointments(details):#displays all the appointments
-        df=pd.read_csv("AppointmentGuru/users/"+str(details[2])+".csv")
-        return df.to_html()
-    
-    def doctors(hosName, branch, specs):
-        df=pd.read_csv("AppointmentGuru/doctors.csv")
-        if hosName=="None" and branch=="None" and specs=="None":
-            doc=df
-        elif hosName=="None" and branch=="None":
-            doc=df[(df['specialisation']==specs)]
-        elif branch=="None" and specs=="None":
-            doc=df[(df['hospitalName']==hosName)]
+    def doctors(hosName, hosBranch, specs):
+        if hosName=="None" and hosBranch=="None" and specs=="None":
+            df=Doctor.objects.all()
+        elif hosName=="None" and hosBranch=="None":
+            df=Doctor.objects.all().filter(specialisation=specs)
+        elif hosBranch=="None" and specs=="None":
+            df=Doctor.objects.all().filter(hospitalName=hosName)
         elif hosName=="None" and specs=="None":
-            doc=df[(df['branch']==branch)]
+            df=Doctor.objects.all().filter(branch=hosBranch)
         elif hosName=="None":
-            doc=df[(df["branch"]==branch) & (df['specialisation']==specs)]
-        elif branch=="None":
-            doc=df[(df["hospitalName"]==hosName) & (df['specialisation']==specs)]
+            df=Doctor.objects.all().filter(branch=hosBranch, specialisation=specs)
+        elif hosBranch=="None":
+            df=Doctor.objects.all().filter(hospitalName=hosName, specialisation=specs)
         elif specs=="None":
-            doc=df[(df["hospitalName"]==hosName) & (df["branch"]==branch)]
+            df=Doctor.objects.all().filter(hospitalName=hosName, branch=hosBranch)
         else:
-            doc=df[(df["hospitalName"]==hosName) & (df["branch"]==branch) & (df['specialisation']==specs)]#.drop_duplicates().to_records(index=False)
-        #docs_list = [row for row in doc]
-        print(doc)
-        return doc
+            df=Doctor.objects.all().filter(hospitalName=hosName, branch=hosBranch, specialisation=specs)
+        print(df)
+        return df
     
 
 class DoctorHomePage:
@@ -202,31 +196,18 @@ def uEditDetails(request):
     return render(request, 'userEditDetails.html', {"details":details})
 
 def bookAppointment(request):
-    details = request.session.get('details')
-    DataOfDoc=pd.read_csv("AppointmentGuru/doctors.csv")
+    user = request.session.get('user')
     docData=UserHomePage.doctors("None", "None", "None")
-    docs=docData.to_html()
-    avSlots=None
     if request.method == 'POST':
         hosName=str(request.POST.get('hosName'))
         branch=str(request.POST.get('branch'))
         specialization=(request.POST.get('specialization'))
         doctor=(request.POST.get('doctor'))
         docData=UserHomePage.doctors(hosName, branch, specialization)
-        docData=docData[["doctorName", "hospitalName", "branch", "time"]]
-        request.session['docData'] = docData.to_dict()
-        docs = docData.to_html()
         if doctor:
-            docDetails=DataOfDoc[DataOfDoc["doctorName"]==doctor].drop_duplicates().to_records(index=False).tolist()
-            request.session['docDetails']=docDetails
-            avSlots=list(map(str, docDetails[0][8].split("/")))
-            request.session['avSlots']=avSlots
-            avSlots=pd.DataFrame(avSlots)
-            #appointmentDate=str(request.POST.get('appointmentDate'))
-            #slot=str(request.POST.get("slot"))
-            return render(request, 'slot.html', {"details":details, "today":str(date.today()), "tomorrow":date.today()+timedelta(days=1), "avSlots":avSlots, 'docDetails':docDetails})
-        return render(request, 'bookAppointment.html', {"result":docs, "docs":docData, "today":str(date.today()), "avSlots":avSlots})
-    return render(request, 'bookAppointment.html', {"details":details, "docs":docData, "result":docs})
+            return render(request, 'slot.html', {"details":user, "today":str(date.today()), "tomorrow":date.today()+timedelta(days=1), "avSlots":avSlots, 'docDetails':docDetails})
+        return render(request, 'bookAppointment.html', {"doctors":docData, "today":str(date.today())})
+    return render(request, 'bookAppointment.html', {"details":user, "doctors":docData})
 
 def selectSlot(request):
     details = request.session.get('details')

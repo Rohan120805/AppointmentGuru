@@ -1,19 +1,75 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Today's Appointments</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+    rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+    crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Appointments</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #006E86;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            margin: 20px auto;
+            max-width: 800px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
         table {
             border-collapse: collapse;
-            width: 100%;
+            width: 50%;
+            margin-top: 20px;
         }
+
         th, td {
             border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
+            padding: 12px;
+            text-align: center;
+            transition: background-color 0.3s ease;
         }
+
         th {
-            background-color: #f0f0f0;
+            background-color: #fff;
+            color: #fff;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        .btn {
+            background-color: #006E86;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #006F94;
+        }
+
+        .btn-danger {
+            background-color: #006E86;
+        }
+
+        .btn-danger:hover {
+            background-color: #006E86;
         }
     </style>
 </head>
@@ -33,7 +89,7 @@
         </div>
         <a class="navbar-brand" href="{% url 'home' %}"><button class='btn btn-danger'>Logout</button></a>
     </nav>
-    <h1>Your Appointments</h1>
+    <h1 align='center'>Your Appointments</h1>
     <div class="table-responsive">
         <table class="table table-striped table-bordered">
             <thead>
