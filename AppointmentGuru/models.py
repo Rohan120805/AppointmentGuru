@@ -71,9 +71,10 @@ class Appointment(models.Model):
     
     doctorName=models.CharField(max_length=50, default=None)
     doctorMailId=models.CharField(max_length=150, default=None)
+    doctorPhoneNumber=models.CharField(max_length=20, default=None)
     patientName=models.CharField(max_length=50, default=None)
     patientMailId=models.CharField(max_length=150, default=None)
-    patientPhoneNo=models.CharField(max_length=20, default=None)
+    patientPhoneNumber=models.CharField(max_length=20, default=None)
     date=models.CharField(max_length=15, default=None)
     time=models.CharField(max_length=20, default=None)
     hospitalName=models.CharField(max_length=30, default=None)

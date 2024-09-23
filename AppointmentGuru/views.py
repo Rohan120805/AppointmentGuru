@@ -6,7 +6,7 @@ import csv
 import pandas as pd
 import os
 from datetime import date, timedelta
-from .models import Customer, Doctor
+from .models import *
 
 def home(request):
   return render(request,'home.html',{'name':'Rohan'})
@@ -188,9 +188,9 @@ def dLogin(request):
     return render(request, 'docLogin.html')
 
 def userAppointments(request):
-    details = request.session.get('details')
-    df=pd.read_csv("AppointmentGuru/users/"+str(details[2])+".csv")
-    return render(request, "yourAppointments.html", {'data': df.to_html()})
+    user = request.session.get('user')
+    appointments=Appointment.objects.all().filter(patientPhoneNumber=user["phoneNumber"])
+    return render(request, "yourAppointments.html", {'data': appointments})
 
 def uEditDetails(request):
     details = request.session.get('details')
