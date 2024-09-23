@@ -10,35 +10,6 @@ from .models import Customer, Doctor
 
 def home(request):
   return render(request,'home.html',{'name':'Rohan'})
-
-
-class LoginPage:
-    def checkpwd(self, data, pwd):
-        fpwd=data[-1]#Fill the index op pwd
-        #pwd=input("ENTER YOUR PASSWORD")
-        if pwd==fpwd:
-            return data
-        else:
-            #print("!!WRONG PASSWORD")
-            return False #LoginPage.checkpwd(data)
-
-    def fetchData(self, fname, id):
-        userId = id
-        userDetails = None
-        with open(fname, newline='') as csvfile:
-            reader = csv.reader(csvfile)
-            for row in reader:
-                if userId == row[1] and not userId.isalnum():
-                    row[2] = int(row[2])
-                    row[3] = int(row[3])
-                    userDetails = row
-                    break
-                elif userId.isalnum() and userId == row[2]:
-                    row[2] = int(row[2])
-                    row[3] = int(row[3])
-                    userDetails = row
-                    break
-        return userDetails
         
 
 class UserHomePage:
@@ -130,7 +101,7 @@ def add_doctor(request):
         invalid = False
         doctorExists = False
         name = request.POST.get('name')
-        email = request.POST.get('email')
+        demail = request.POST.get('email')
         phNum = request.POST.get('phNum')
         age = int(request.POST.get('age'))
         gender = request.POST.get('gender')
@@ -139,18 +110,18 @@ def add_doctor(request):
         branch = request.POST.get('branch')
         time = request.POST.get('time')
         pwd = request.POST.get('pwd')
-        if not str(email).endswith("@gmail.com"):
+        if not str(demail).endswith("@gmail.com"):
             invalid = True
         else:
             try:
-                if Doctor.objects.get(email=email) or Doctor.objects.get(phoneNumber=phNum):
+                if Doctor.objects.get(email=demail) or Doctor.objects.get(phoneNumber=phNum):
                     doctorExists = True
             except:
                 doctorExists = False
         if invalid or doctorExists:
             return render(request, 'add_doctor.html', {'invalid': invalid, 'doctorExists': doctorExists})
         else:
-            doctor = Doctor(doctorName=name, email=email, phoneNumber=phNum, age=age, gender=gender, specialisation=spec, hospitalName=hosName, branch=branch, time=time, password=pwd)
+            doctor = Doctor(doctorName=name, email=demail, phoneNumber=phNum, age=age, gender=gender, specialisation=spec, hospitalName=hosName, branch=branch, time=time, password=pwd)
             doctor.save()
             return render(request, 'success.html', {"success": "Details updated in database"})
     return render(request, 'add_doctor.html')

@@ -67,10 +67,18 @@ class Customer(models.Model):
     def __str__(self):
         return self.name
     
-class Appointments(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE)
-    time = models.CharField(default="", max_length=50)
+class Appointment(models.Model):
+    
+    doctorName=models.CharField(max_length=50, default=None)
+    doctorMailId=models.CharField(max_length=150, default=None)
+    patientName=models.CharField(max_length=50, default=None)
+    patientMailId=models.CharField(max_length=150, default=None)
+    patientPhoneNo=models.CharField(max_length=20, default=None)
+    date=models.CharField(max_length=15, default=None)
+    time=models.CharField(max_length=20, default=None)
+    hospitalName=models.CharField(max_length=30, default=None)
+    branch=models.CharField(max_length=30, default=None)
+    specialisation=models.CharField(max_length=20, default=None)
 
     def __str__(self):
-        return f"{self.customer.name} -> {self.doctor.doctorName}"
+        return self.doctorName
