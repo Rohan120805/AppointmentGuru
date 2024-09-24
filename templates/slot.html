@@ -70,7 +70,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>{{ details }}</h1>
+        <h1>{{ doctorPhoneNumber }}</h1>
         <form action="{% url 'selectSlot' %}" method='post' class="appointment-form">
             {% csrf_token %}
             <div class="form-group">

@@ -136,6 +136,7 @@
                     <td>{{doctor.branch}}</td>
                     <td>{{doctor.specialisation}}</td>
                     <td>{{doctor.time}}</td>
+                    <td><a href="{% url 'selectSlot' %}"><button type="button" class="btn btn-success">Book Appointment</button></a></td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -146,8 +147,8 @@
         {% csrf_token %}
         <label for="doctor">Select Doctor:</label>
         <select name="doctor" id="doctor">
-            {% for doc in docs.doctorName.values %}
-            <option value={{doc}}>{{doc}}</option>
+            {% for doctor in doctors %}
+            <option value={{doctor.doctorName}}>{{doctor.doctorName}}</option>
             {% endfor %}
         </select>
         <br>
