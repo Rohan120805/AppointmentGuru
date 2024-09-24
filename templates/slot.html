@@ -70,8 +70,8 @@
 </head>
 <body>
     <div class="container">
-        <h1>{{ doctorPhoneNumber }}</h1>
-        <form action="{% url 'selectSlot' %}" method='post' class="appointment-form">
+        <h1>Doctor Phone Number: {{ phoneNumber }}</h1>
+        <form action="{% url 'selectSlot' phoneNumber %}" method='post' class="appointment-form">
             {% csrf_token %}
             <div class="form-group">
                 <label for="appointmentDate">Select Date:</label>
@@ -79,14 +79,13 @@
             </div>
             <div class="form-group">
                 <label for="slot">Select Slot:</label>
-                <select name="slot" id="slot" required>
-                    <option value="">Select a slot</option>
-                    {% for s in avSlots.0 %}
-                        <option value="{{ s }}">{{ s }}</option>
+                <select name="slot" required>
+                    {% for slot in avSlots %}
+                    <option value="{{ slot }}">{{ slot }}</option>
                     {% endfor %}
                 </select>
             </div>
-            <button type="submit" class="btn-book">Book Appointment</button>
+            <input type="submit" value="Book Slot" class="btn-book">
         </form>
     </div>
 </body>

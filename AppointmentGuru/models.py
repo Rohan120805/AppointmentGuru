@@ -83,3 +83,12 @@ class Appointment(models.Model):
 
     def __str__(self):
         return self.doctorName
+    
+class Hospital(models.Model):
+
+    hospitalName=models.CharField(max_length=50, default=None)
+    branch=models.CharField(max_length=30, default=None)
+    code=models.CharField(max_length=15, default=None)
+
+    def __str__(self):
+        return f"{self.hospitalName}->{self.branch}"

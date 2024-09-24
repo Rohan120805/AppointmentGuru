@@ -136,38 +136,11 @@
                     <td>{{doctor.branch}}</td>
                     <td>{{doctor.specialisation}}</td>
                     <td>{{doctor.time}}</td>
-                    <td><a href="{% url 'selectSlot' %}"><button type="button" class="btn btn-success">Book Appointment</button></a></td>
+                    <td><a href={% url "selectSlot" doctor.phoneNumber %}><button type="button" class="btn btn-success">Book Appointment</button></a></td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
-
-    <form action="{% url 'bookAppointment' %}" method="post">
-        {% csrf_token %}
-        <label for="doctor">Select Doctor:</label>
-        <select name="doctor" id="doctor">
-            {% for doctor in doctors %}
-            <option value={{doctor.doctorName}}>{{doctor.doctorName}}</option>
-            {% endfor %}
-        </select>
-        <br>
-        <input type="submit" value="Select">
-    </form>
-
-    <script>
-        // Add some JavaScript to make the form more interactive
-        document.addEventListener("DOMContentLoaded", function() {
-            const selects = document.querySelectorAll("select");
-            selects.forEach(function(select) {
-                select.addEventListener("change", function(event) {
-                    const selectedValue = event.target.value;
-                    const selectedText = event.target.options[event.target.selectedIndex].text;
-                    const id = event.target.id;
-                    document.getElementById(`selected-${id}`).innerHTML = `Selected ${id}: ${selectedText}`;
-                });
-            });
-        });
-    </script>
 </body>
 </html>

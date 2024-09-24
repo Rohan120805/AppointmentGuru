@@ -205,11 +205,12 @@ def bookAppointment(request):
         doctor=(request.POST.get('doctor'))
         docData=UserHomePage.doctors(hosName, branch, specialization)
         if doctor:
-            return render(request, 'slot.html', {"details":user, "today":str(date.today()), "tomorrow":date.today()+timedelta(days=1), "avSlots":avSlots, 'docDetails':docDetails})
+            return render(request, 'slot.html', {"details":user, "today":str(date.today()), "tomorrow":date.today()+timedelta(days=1)})
         return render(request, 'bookAppointment.html', {"doctors":docData, "today":str(date.today())})
     return render(request, 'bookAppointment.html', {"details":user, "doctors":docData})
 
-def selectSlot(request):
+def selectSlot(request, phoneNumber):
+    # print("Doctor: ", phoneNumber, "Type:", type(phoneNumber))
     details = request.session.get('details')
     docDetails = request.session.get('docDetails')
     if request.method == 'POST':
@@ -219,7 +220,7 @@ def selectSlot(request):
         print(slot)
         print(pd.DataFrame(request.session.get('avSlots')))
         return render(request, 'success.html', {"choice":appointmentDate, "value":slot})
-    return render(request, 'slot.html', {"details":details, "today":str(date.today()), "tomorrow":date.today()+timedelta(days=1), "avSlots":pd.DataFrame(request.session.get('avSlots')), 'docDetails':docDetails})
+    return render(request, 'slot.html', {"details":details, "today":str(date.today()), "tomorrow":date.today()+timedelta(days=1), "phoneNumber":phoneNumber})
     #return render(request, 'slot.html', {"details":details})
 
 def doctorAppointments(request):
