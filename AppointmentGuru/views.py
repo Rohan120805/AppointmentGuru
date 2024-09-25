@@ -185,7 +185,7 @@ def userAppointments(request):
     user = request.session.get('user')
     appointments=Appointment.objects.all().filter(patientPhoneNumber=user["phoneNumber"])
     return render(request, "yourAppointments.html", {'appointments': appointments})
-
+#success till here
 def uEditDetails(request):#todo
     details = request.session.get('details')
     if request.method == 'POST':
@@ -209,19 +209,15 @@ def bookAppointment(request):#todo
         return render(request, 'bookAppointment.html', {"doctors":docData, "today":str(date.today())})
     return render(request, 'bookAppointment.html', {"details":user, "doctors":docData})
 
-def selectSlot(request, phoneNumber):#todo
-    # print("Doctor: ", phoneNumber, "Type:", type(phoneNumber))
-    details = request.session.get('details')
-    docDetails = request.session.get('docDetails')
+def selectSlot(request, doctorPhoneNumber):#todo
+    user = request.session.get('user')
+    doctor=Doctor.objects.get(phoneNumber=doctorPhoneNumber)
+    slots=list(map(str, doctor.time.split('/')))
     if request.method == 'POST':
         appointmentDate=request.POST.get('appointmentDate')
         slot=request.POST.get('slot')
-        print(appointmentDate)
-        print(slot)
-        print(pd.DataFrame(request.session.get('avSlots')))
         return render(request, 'success.html', {"choice":appointmentDate, "value":slot})
-    return render(request, 'slot.html', {"details":details, "today":str(date.today()), "tomorrow":date.today()+timedelta(days=1), "phoneNumber":phoneNumber})
-    #return render(request, 'slot.html', {"details":details})
+    return render(request, 'slot.html', {"details":user, "tomorrow":date.today()+timedelta(days=1), "phoneNumber":doctorPhoneNumber, "slots":slots})
 
 def doctorAppointments(request):#success
     doctor=request.session.get('doctor')

@@ -43,7 +43,7 @@ class Doctor(models.Model):
     specialisation=models.CharField(choices=specialisationChoices, max_length=30, default=None)
     hospitalName=models.CharField(choices=hospitalNameChoices, max_length=30, default=None)
     branch=models.CharField(choices=branchChoices, max_length=30, default=None)
-    time=models.CharField(max_length=30, default=None)
+    time=models.CharField(max_length=40, default=None)
     password=models.CharField(max_length=20, default=None)
 #    customer = models.ManyToManyField(Customer)
 
@@ -76,7 +76,7 @@ class Appointment(models.Model):
     patientMailId=models.CharField(max_length=150, default=None)
     patientPhoneNumber=models.CharField(max_length=20, default=None)
     date=models.CharField(max_length=15, default=None)
-    time=models.CharField(max_length=20, default=None)
+    time=models.CharField(max_length=25, default=None)
     hospitalName=models.CharField(max_length=30, default=None)
     branch=models.CharField(max_length=30, default=None)
     specialisation=models.CharField(max_length=20, default=None)
