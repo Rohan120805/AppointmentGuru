@@ -1,10 +1,5 @@
-from django.shortcuts import render, redirect, HttpResponse,   get_object_or_404
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib import messages
-from django.db import models
-import csv
+from django.shortcuts import render
 import pandas as pd
-import os
 from datetime import date, timedelta
 from .models import *
 
@@ -185,7 +180,7 @@ def userAppointments(request):
     user = request.session.get('user')
     appointments=Appointment.objects.all().filter(patientPhoneNumber=user["phoneNumber"])
     return render(request, "yourAppointments.html", {'appointments': appointments})
-#success till here
+
 def uEditDetails(request):#todo
     details = request.session.get('details')
     if request.method == 'POST':
@@ -216,6 +211,11 @@ def selectSlot(request, doctorPhoneNumber):#todo
     if request.method == 'POST':
         appointmentDate=request.POST.get('appointmentDate')
         slot=request.POST.get('slot')
+        #user: name, email, phoneNumber, age, gender
+        #doctor: doctorName, email, phoneNumber, age, gender, specialisation, hospitalName, branch, time
+        #appointment: doctorName, doctorMailId, doctorPhoneNumber, patientName, patientMailId, patientPhoneNumber, date, time, hospitalName, branch, specialisation
+        appointment = Appointment(doctorName=doctor.doctorName, doctorMailId=doctor.email, doctorPhoneNumber=doctor.phoneNumber, patientName=user['name'], patientMailId=user['email'], patientPhoneNumber=user['phoneNumber'], date=appointmentDate, time=slot, hospitalName=doctor.hospitalName, branch=doctor.branch, specialisation=doctor.specialisation)
+        appointment.save()
         return render(request, 'success.html', {"choice":appointmentDate, "value":slot})
     return render(request, 'slot.html', {"details":user, "tomorrow":date.today()+timedelta(days=1), "phoneNumber":doctorPhoneNumber, "slots":slots})
 
