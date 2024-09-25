@@ -92,30 +92,45 @@
     </style>
 </head>
 <body>
-    <form action="" method="post">
+    <form action="" method="post" align='left'>
         {% csrf_token %}
-        Enter your Name: <input type="text" name="name" required><br>
+        Name: <input type="text" name="name" required><br>
         {% if name == "" %}
             <p style="color: red;">**Please enter your name**</p>
         {% endif %}
-        Enter your Email: <input type="text" name="email" required><br>
+        Email: <input type="text" name="email" required><br>
         {% if invalid %}
             <p style="color: red;">Invalid Email-ID</p>
         {% endif %}
-        Enter your Phone Number: <input type="text" name="phNum" required><br>
+        Phone Number: <input type="text" name="phNum" required><br>
         {% if doctorExists %}
             <p style="color: red;">Doctor already exists</p>
         {% endif %}
-        Enter your Age: <input type="number" name="age" required><br>
-        <label for="gender">Enter your gender:</label>
+        Age: <input type="number" name="age" required><br>
+        <label for="gender">Gender:</label>
         <select id="gender" name="gender" required>
+            <option value="None">None</option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
         </select><br>
-        Enter your Specialization: <input type="text" name="specialisation" required><br>
-        Enter your Hospital Name: <input type="text" name="hospital" required><br>
-        Enter your Password: <input type="text" name="pwd" required><br>
+        <p id="genderWarning" style="color: red; display: none;">Please select a gender other than "None".</p>
+        Specialization: <input type="text" name="specialisation" required><br>
+        Hospital Name: <input type="text" name="hospital" required><br>
+        Hospital ID: <input type="text" name="hosId" required><br>
+        {% if invalidID %}
+            <p style="color: red;">Invalid Hospital ID</p>
+        {% endif %}
+        Password: <input type="text" name="pwd" required><br>
         <button class="button" type="submit">Sign Up</button>
     </form>
 </body>
+<script>
+    document.querySelector('form').addEventListener('submit', function(event) {
+        var gender = document.getElementById('gender').value;
+        if (gender === 'None') {
+            event.preventDefault();
+            document.getElementById('genderWarning').style.display = 'block';
+        }
+    });
+</script>
 </html>

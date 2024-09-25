@@ -96,11 +96,11 @@
         <h2>Login to Your Account</h2>
         <form action="{% url 'uLogin' %}" method="post">
             {% csrf_token %}
-            Enter Phone Number or mail-ID: <input type="text" name="authid" required><br>
-            Enter Password: <input type="password" name="pwd" required><br>
+            Phone Number or Mail-ID: <input type="text" name="authid" required><br>
+            Password: <input type="password" name="pwd" required><br>
 
             {% if error %}
-                <p class="warning">Invalid ID or password. Please try again.</p>
+                <p class="warning">Invalid ID or Password. Please try again.</p>
             {% endif %}
             <br><br>
             <button class="button" type="submit">Login</button>

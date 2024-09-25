@@ -96,9 +96,11 @@ def add_doctor(request):
         gender = request.POST.get('gender')
         spec = request.POST.get('spec')
         hosName = request.POST.get('hosName')
-        branch = request.POST.get('branch')
+        hosBranch = request.POST.get('branch')
         time = request.POST.get('time')
+        hosId = request.POST.get('hosId')
         pwd = request.POST.get('pwd')
+        id=Hospital.objects.get(hospitalName=hosName, branch=hosBranch)
         if not str(demail).endswith("@gmail.com"):
             invalid = True
         else:
@@ -107,12 +109,15 @@ def add_doctor(request):
                     doctorExists = True
             except:
                 doctorExists = False
-        if invalid or doctorExists:
-            return render(request, 'add_doctor.html', {'invalid': invalid, 'doctorExists': doctorExists})
+        if hosId==id:
+            if invalid or doctorExists:
+                return render(request, 'add_doctor.html', {'invalid': invalid, 'doctorExists': doctorExists, 'invalidID': False})
+            else:
+                doctor = Doctor(doctorName=name, email=demail, phoneNumber=phNum, age=age, gender=gender, specialisation=spec, hospitalName=hosName, branch=hosBranch, time=time, password=pwd)
+                doctor.save()
+                return render(request, 'success.html', {"success": "Details updated in database"})
         else:
-            doctor = Doctor(doctorName=name, email=demail, phoneNumber=phNum, age=age, gender=gender, specialisation=spec, hospitalName=hosName, branch=branch, time=time, password=pwd)
-            doctor.save()
-            return render(request, 'success.html', {"success": "Details updated in database"})
+            return render(request, 'add_doctor.html', {'invalid': invalid, 'doctorExists': doctorExists, 'invalidID': True})
     return render(request, 'add_doctor.html')
 
 def uLogin(request):
