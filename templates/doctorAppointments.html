@@ -89,7 +89,12 @@
         <a class="navbar-brand" href="{% url 'home' %}"><button class='btn btn-danger'>Logout</button></a>
     </nav>
     <div class="container">
-        <h1 align='center'>Today's Appointments</h1>
+        <h1 align='center'>Your Appointments</h1>
+        <form action="{% url 'doctorAppointments' %}" method="post">
+            {% csrf_token %}
+            <label for="date">Date:</label> <input type="date" name="date">
+            <button class="button" type="submit">Filter</button>
+        </form>
         <table align='center'>
             <tr>
                 <th>Patient Name</th>

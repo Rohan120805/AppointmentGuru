@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Appointmnet Guru</title>
     <style>
+
         html, body {
             height: 100%;
             margin: 0;
@@ -12,6 +13,7 @@
             justify-content: center;
             align-items: center;
         }
+
         .centered-div {
             width: 50%;
             padding: 20px;
@@ -19,21 +21,25 @@
             justify-content: space-between;
             align-items: center;
         }
-        /* Add some animations and transitions */
+
         .btn {
             transition: background-color 0.5s, color 0.5s, transform 0.5s;
         }
+        
         .btn:hover {
             background-color: #3e8e41;
             color: #fff;
             transform: scale(1.1);
         }
+        
         .btn:active {
             transform: scale(0.9);
         }
+        
         .btn:not(:hover) {
             transform: scale(0.9);
         }
+        
         h1 {
             animation: fade-in 2s;
         }
@@ -45,7 +51,7 @@
                 opacity: 1;
             }
         }
-        /* Add some animations to the buttons */
+
         .btn {
             animation: pulse 2s infinite;
         }
@@ -63,10 +69,10 @@
 <body>
     <h1>Welcome To<br>Appointment Guru</h1>
     <div class="centered-div">
-        <a href="userLogin"><button type="button" class="btn btn-success">User Login</button></a>&nbsp;
-        <a href="doctorLogin"><button type="button" class="btn btn-success">Doctor Login</button></a>&nbsp;
-        <a href="add_user"><button type="button" class="btn btn-success">User Signup</button></a>&nbsp;
-        <a href="add_doctor"><button type="button" class="btn btn-success">Doctor Signup</button></a>&nbsp;
+        <a href={% url 'uLogin' %}><button type="button" class="btn btn-success">User Login</button></a>&nbsp;
+        <a href={% url 'dLogin' %}><button type="button" class="btn btn-success">Doctor Login</button></a>&nbsp;
+        <a href={% url 'userSignUp' %}><button type="button" class="btn btn-success">User Signup</button></a>&nbsp;
+        <a href={% url 'doctorSignUp' %}><button type="button" class="btn btn-success">Doctor Signup</button></a>&nbsp;
     </div>
 </body>
 </html>

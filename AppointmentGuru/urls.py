@@ -2,15 +2,14 @@ from django.urls import path
 from . import views
 urlpatterns=[
     path('', views.home, name='home'),
-    path('add_user/', views.add_user, name='add_user'),
+    path('userSignUp/', views.add_user, name='userSignUp'),
     path('userLogin/', views.uLogin, name='uLogin'),
     path('userLogin/userHome/yourAppointments/', views.userAppointments, name='yourAppointments'),
     path('userLogin/userHome/bookAppointment', views.bookAppointment, name='bookAppointment'),
     path('userLogin/userHome/bookAppointment/selectSlot/<str:phoneNumber>/', views.selectSlot, name='selectSlot'),    
     path('userLogin/userHome/userEditDetails', views.uEditDetails, name='userEditDetails'),
-    path('add_doctor/', views.add_doctor, name='add_doctor'),
+    path('doctorSignUp/', views.add_doctor, name='doctorSignUp'),
     path('doctorLogin/', views.dLogin, name='dLogin'),
-    #path('userLogin/userHome/', views., name='userHome'),
-    path('doctorLogin/doctorHome/yourAppointments/', views.doctorAppointments, name='docAppointments'),
+    path('doctorLogin/doctorHome/doctorAppointments/', views.doctorAppointments, name='doctorAppointments'),
     path('doctorLogin/doctorHome/todayAppointments/', views.todayAppointments, name='todayAppointments'),
 ]

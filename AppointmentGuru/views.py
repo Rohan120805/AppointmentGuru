@@ -173,7 +173,7 @@ def dLogin(request):
             doctorDetails=False
         if doctorDetails:
             if doctorDetails.password==pwd:
-                request.session['user'] = doctor
+                request.session['doctor'] = doctor
                 return render(request, "docHome.html", {'result': doctor})
             else:
                 return render(request, 'docLogin.html', {'error': True})
@@ -184,9 +184,9 @@ def dLogin(request):
 def userAppointments(request):
     user = request.session.get('user')
     appointments=Appointment.objects.all().filter(patientPhoneNumber=user["phoneNumber"])
-    return render(request, "yourAppointments.html", {'data': appointments})
+    return render(request, "yourAppointments.html", {'appointments': appointments})
 
-def uEditDetails(request):
+def uEditDetails(request):#todo
     details = request.session.get('details')
     if request.method == 'POST':
         choice = str(request.POST.get('choice'))
@@ -195,7 +195,7 @@ def uEditDetails(request):
         return render(request, 'success.html', {"success":"Details updated in database", "choice":choice, "value":value})
     return render(request, 'userEditDetails.html', {"details":details})
 
-def bookAppointment(request):
+def bookAppointment(request):#todo
     user = request.session.get('user')
     docData=UserHomePage.doctors("None", "None", "None")
     if request.method == 'POST':
@@ -209,7 +209,7 @@ def bookAppointment(request):
         return render(request, 'bookAppointment.html', {"doctors":docData, "today":str(date.today())})
     return render(request, 'bookAppointment.html', {"details":user, "doctors":docData})
 
-def selectSlot(request, phoneNumber):
+def selectSlot(request, phoneNumber):#todo
     # print("Doctor: ", phoneNumber, "Type:", type(phoneNumber))
     details = request.session.get('details')
     docDetails = request.session.get('docDetails')
@@ -223,26 +223,26 @@ def selectSlot(request, phoneNumber):
     return render(request, 'slot.html', {"details":details, "today":str(date.today()), "tomorrow":date.today()+timedelta(days=1), "phoneNumber":phoneNumber})
     #return render(request, 'slot.html', {"details":details})
 
-def doctorAppointments(request):
-    # details = request.session.get('ddetails')
-    # data=DoctorHomePage.yourAppointments(details)
-    doctors = Doctor.objects.all().filter(specialisation = 'oncology')
-    print(doctors)
+def doctorAppointments(request):#success
+    doctor=request.session.get('doctor')
+    fDate=request.POST.get('date')
+    if fDate:
+        appointments = Appointment.objects.all().filter(doctorName=doctor['name'], date=fDate)
+        return render(request, "doctorAppointments.html", {'appointments':appointments})
+    appointments = Appointment.objects.all().filter(doctorName=doctor['name'])
+    return render(request, "doctorAppointments.html", {'appointments':appointments})
+
+def todayAppointments(request):#success
+    doctor=request.session.get('doctor')
+    print(doctor['name'])
+    appointments = Appointment.objects.all().filter(doctorName=doctor['name'], date=date.today())
+    print(appointments)
     context = {
-        'doctors': doctors
+        'appointments': appointments,
     }
-    return render(request, "yourAppointments.html", context)
+    return render(request, "todayAppointments.html", context)
 
-def todayAppointments(request):
-    details = request.session.get('ddetails')
-    print(date.today())
-    df = pd.read_csv("AppointmentGuru/doctors/"+str(details[2])+".csv")
-    df = df[df["appointmentDate"] == str(date.today())]
-    print(df)
-    html_content = df.to_html()
-    return HttpResponse(html_content)
-
-def dEditDetails(request):
+def dEditDetails(request):#todo
     details = request.session.get('ddetails')
     if request.method == 'POST':
         choice = str(request.POST.get('choice'))
