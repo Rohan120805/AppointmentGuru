@@ -39,18 +39,6 @@ class UserHomePage:
 class DoctorHomePage:
     #doctorName,email,phoneNumber,age,gender,specialisation,hospitalName,branch,time,password
 
-    def yourAppointments(details):
-        df=pd.read_csv("AppointmentGuru/doctors/"+str(details[2])+".csv")
-        #print(df)
-        return df.to_html()
-    
-    def todayAppointments(details):
-        print(date.today())
-        df=pd.read_csv("AppointmentGuru/doctors/"+str(details[2])+".csv")
-        df=df[df["appointmentDate"]==str(date.today())]
-        print(df)
-        return df.to_html()
-
     def alpha(details, field, data):
         df = pd.read_csv("AppointmentGuru/doctors.csv")
         idx = df[(df["phoneNumber"] == details[2])].index
