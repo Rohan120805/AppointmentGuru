@@ -109,7 +109,7 @@
             <div class="navbar-nav">
               <a class="nav-link" href={% url 'yourAppointments' %}><button class='btn btn-danger'>Your Appointments</button></a>
               <a class="nav-link" href={% url 'bookAppointment' %}><button class='btn btn-danger'>Book Appointments</button></a>
-              <a class="nav-link" href={% url 'userEditDetails' %}><button class='btn btn-danger'>Edit Details</button></a>
+              {% comment %} <a class="nav-link" href={% url 'userEditDetails' %}><button class='btn btn-danger'>Edit Details</button></a> {% endcomment %}
             </div>
           </div>
         </div>
