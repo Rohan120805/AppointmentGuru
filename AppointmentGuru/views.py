@@ -183,7 +183,7 @@ def uEditDetails(request):#todo
         return render(request, 'success.html', {"success":"Details updated in database", "choice":choice, "value":value})
     return render(request, 'userEditDetails.html', {"details":details})
 
-def bookAppointment(request):#todo
+def bookAppointment(request):#success
     user = request.session.get('user')
     docData=UserHomePage.doctors("None", "None", "None")
     if request.method == 'POST':
@@ -197,7 +197,7 @@ def bookAppointment(request):#todo
         return render(request, 'bookAppointment.html', {"doctors":docData, "today":str(date.today())})
     return render(request, 'bookAppointment.html', {"details":user, "doctors":docData})
 
-def selectSlot(request, doctorPhoneNumber):#todo
+def selectSlot(request, doctorPhoneNumber):#success
     user = request.session.get('user')
     doctor=Doctor.objects.get(phoneNumber=doctorPhoneNumber)
     slots=list(map(str, doctor.time.split('/')))

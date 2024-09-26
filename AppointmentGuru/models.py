@@ -82,7 +82,7 @@ class Appointment(models.Model):
     specialisation=models.CharField(max_length=20, default=None)
 
     def __str__(self):
-        return self.doctorName
+        return f"{self.doctorName} -> {self.patientName}"
     
 class Hospital(models.Model):
 
@@ -91,4 +91,4 @@ class Hospital(models.Model):
     code=models.CharField(max_length=15, default=None)
 
     def __str__(self):
-        return f"{self.hospitalName}->{self.branch}"
+        return f"{self.hospitalName} -> {self.branch}"
