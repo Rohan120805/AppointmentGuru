@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-t0ve)%5f5ru8#gv6eg3)&@r=i=k!1%yhk6v0%8z$_r))d6%n&2
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['appointment-guru.onrender.com','127.0.0.1']
+ALLOWED_HOSTS = ['appointmentguru.onrender.com','127.0.0.1']
 
 
 # Application definition
