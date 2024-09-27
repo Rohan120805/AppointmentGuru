@@ -1,8 +1,5 @@
 from django.db import models
 
-# Hello Rohan
-
-# Create your models here.
     
 class Doctor(models.Model):
 
@@ -28,9 +25,9 @@ class Doctor(models.Model):
     )
 
     branchChoices = (
-        ("banjara Hills", "banjara Hills"),
+        ("banjara hills", "banjara Hills"),
         ("secunderabad", "secunderabad"),
-        ("jubilee Hills", "jubilee Hills"),
+        ("jubilee hills", "jubilee Hills"),
         ("malakpet", "malakpet"),
         ("gachibowli", "gachibowli"),
     )

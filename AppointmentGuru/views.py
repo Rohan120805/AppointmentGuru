@@ -1,7 +1,7 @@
 from django.shortcuts import render
 import pandas as pd
 from datetime import date, timedelta
-from .models import *
+from .models import Doctor, Customer, Appointment, Hospital
 
 def home(request):
   return render(request,'home.html',{'name':'Rohan'})
@@ -82,7 +82,7 @@ def add_doctor(request):
         phNum = request.POST.get('phNum')
         age = int(request.POST.get('age'))
         gender = request.POST.get('gender')
-        spec = request.POST.get('spec')
+        spec = request.POST.get('specialisation')
         hosName = request.POST.get('hosName')
         hosBranch = request.POST.get('branch')
         time = request.POST.get('time')
@@ -97,7 +97,7 @@ def add_doctor(request):
                     doctorExists = True
             except:
                 doctorExists = False
-        if hosId==id:
+        if hosId==id.code:
             if invalid or doctorExists:
                 return render(request, 'add_doctor.html', {'invalid': invalid, 'doctorExists': doctorExists, 'invalidID': False})
             else:
