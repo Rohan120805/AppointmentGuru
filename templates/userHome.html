@@ -52,7 +52,7 @@
             width: 300px;
             margin: 20px auto;
             padding: 20px;
-            background-color: #333;
+            background-color: #fff;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
             transition: box-shadow 0.2s ease-in-out;
@@ -67,8 +67,8 @@
             padding: 10px;
             margin-bottom: 10px;
             box-sizing: border-box;
-            background-color: #444;
-            color: #fff;
+            background-color: #333;
+            color: #333;
             border: none;
             border-radius: 5px;
             transition: background-color 0.2s ease-in-out;
@@ -85,7 +85,7 @@
         }
 
         .btn {
-          background-color: #006E86; /* Changed to the button color in home.html */
+          background-color: #006E86;
           border: none;
           border-radius: 5px;
           cursor: pointer;
@@ -93,7 +93,7 @@
       }
 
       .btn:hover {
-          background-color: #006F94; /* Changed to a darker button color on hover */
+          background-color: #006F94;
           box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
           transform: scale(1.1);
       }
@@ -116,6 +116,25 @@
         <a class="navbar-brand" href="{% url 'home' %}"><button class='btn btn-danger'>Logout</button></a>
       </nav>
       <h1>Welcome {{result.name}}.</h1>
+      <form>
+        Calculate your BMI<br>
+        <input type="number" id="weight" placeholder="Enter your weight in kg"><br>
+        <input type="number" id="height" placeholder="Enter your height in meters"><br>
+        <button type="button" onclick="calculateBMI()">Calculate BMI</button>
+        <p id="bmiResult"></p>
+      </form>
       <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4"></script>
+      <script>
+        function calculateBMI() {
+            var weight = parseFloat(document.getElementById('weight').value);
+            var height = parseFloat(document.getElementById('height').value);
+            if (weight && height) {
+                var bmi = weight / (height * height);
+                document.getElementById('bmiResult').innerText = 'Your BMI is ' + bmi.toFixed(2);
+            } else {
+                document.getElementById('bmiResult').innerText = 'Please enter both weight and height.';
+            }
+        }
+      </script>
 </body>
 </html>
