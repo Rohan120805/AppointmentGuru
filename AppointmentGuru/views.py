@@ -69,7 +69,15 @@ def add_user(request):
         else:
             customer = Customer(name=name, email=uemail, phoneNumber=phNum, age=age, gender=gender, password=pwd)
             customer.save()
-            return render(request, 'success.html', {"success": "Details updated in database. Go back to login page."})
+            user = {
+            'name': name,
+            'email': uemail,
+            'phoneNumber': phNum,
+            'age': age,
+            'gender': gender,
+            }
+            request.session['user'] = user
+            return render(request, "userHome.html", {'result': user})
     return render(request, 'add_user.html')
 
 def add_doctor(request):
