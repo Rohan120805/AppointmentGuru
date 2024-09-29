@@ -4,6 +4,7 @@ urlpatterns=[
     path('', views.home, name='home'),
     path('userSignUp/', views.add_user, name='userSignUp'),
     path('userLogin/', views.uLogin, name='uLogin'),
+    path('userLogin/userHome/', views.userHome, name='userHome'),
     path('userLogin/userHome/yourAppointments/', views.userAppointments, name='yourAppointments'),
     path('userLogin/userHome/bookAppointment', views.bookAppointment, name='bookAppointment'),
     path('userLogin/userHome/bookAppointment/selectSlot/<str:doctorPhoneNumber>/', views.selectSlot, name='selectSlot'),    

@@ -5,7 +5,6 @@ from .models import Doctor, Customer, Appointment, Hospital
 
 def home(request):
   return render(request,'home.html',{'name':'Rohan'})
-        
 
 class UserHomePage:
     
@@ -70,7 +69,7 @@ def add_user(request):
         else:
             customer = Customer(name=name, email=uemail, phoneNumber=phNum, age=age, gender=gender, password=pwd)
             customer.save()
-            return render(request, 'success.html', {"success": "Details updated in database"})
+            return render(request, 'success.html', {"success": "Details updated in database. Go back to login page."})
     return render(request, 'add_user.html')
 
 def add_doctor(request):
@@ -103,7 +102,7 @@ def add_doctor(request):
             else:
                 doctor = Doctor(doctorName=name, email=demail, phoneNumber=phNum, age=age, gender=gender, specialisation=spec, hospitalName=hosName, branch=hosBranch, time=time, password=pwd)
                 doctor.save()
-                return render(request, 'success.html', {"success": "Details updated in database"})
+                return render(request, 'success.html', {"success": "Details updated in database. Go back to login page."})
         else:
             return render(request, 'add_doctor.html', {'invalid': invalid, 'doctorExists': doctorExists, 'invalidID': True})
     return render(request, 'add_doctor.html')
@@ -136,6 +135,10 @@ def uLogin(request):
         else:
             return render(request, 'userLogin.html', {'error': True})
     return render(request, 'userLogin.html')
+
+def userHome(request):
+    user = request.session.get('user')
+    return render(request, 'userHome.html', {'result': user})
 
 def dLogin(request):
     render(request, 'docLogin.html')
@@ -209,7 +212,7 @@ def selectSlot(request, doctorPhoneNumber):#success
         #appointment: doctorName, doctorMailId, doctorPhoneNumber, patientName, patientMailId, patientPhoneNumber, date, time, hospitalName, branch, specialisation
         appointment = Appointment(doctorName=doctor.doctorName, doctorMailId=doctor.email, doctorPhoneNumber=doctor.phoneNumber, patientName=user['name'], patientMailId=user['email'], patientPhoneNumber=user['phoneNumber'], date=appointmentDate, time=slot, hospitalName=doctor.hospitalName, branch=doctor.branch, specialisation=doctor.specialisation)
         appointment.save()
-        return render(request, 'success.html', {"choice":appointmentDate, "value":slot})
+        return render(request, 'success.html', {"success":f"Your appointment has been confirmed with Dr. {doctor.doctorName}", "choice":f"Date: {appointmentDate}", "value":f"Time: {slot}"})
     return render(request, 'slot.html', {"details":user, "tomorrow":date.today()+timedelta(days=1), "phoneNumber":doctorPhoneNumber, "slots":slots})
 
 def doctorAppointments(request):#success
