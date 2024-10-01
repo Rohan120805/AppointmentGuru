@@ -95,6 +95,7 @@ def add_doctor(request):
         time = request.POST.get('time')
         hosId = request.POST.get('hosId')
         pwd = request.POST.get('pwd')
+        print(hosName, hosBranch)
         id=Hospital.objects.get(hospitalName=hosName, branch=hosBranch)
         if not str(demail).endswith("@gmail.com"):
             invalid = True
