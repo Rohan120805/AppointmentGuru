@@ -102,6 +102,8 @@
             {% if error %}
                 <p class="warning">Invalid ID or Password. Please try again.</p>
             {% endif %}
+            <br>
+            New around here?<a href={% url 'userSignUp' %}>Signup</a>
             <br><br>
             <button class="button" type="submit">Login</button>
         </form>
