@@ -204,6 +204,7 @@ def bookAppointment(request):#success
         specialization=(request.POST.get('specialization'))
         doctor=(request.POST.get('doctor'))
         docData=UserHomePage.doctors(hosName, branch, specialization)
+        print(hosName, branch, specialization)
         if doctor:
             return render(request, 'slot.html', {"details":user, "today":str(date.today()), "tomorrow":date.today()+timedelta(days=1)})
         return render(request, 'bookAppointment.html', {"doctors":docData, "today":str(date.today())})
