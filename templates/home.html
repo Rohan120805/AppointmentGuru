@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="dark">
 <head>
@@ -6,7 +7,7 @@
     crossorigin="anonymous">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Appointmnet Guru</title>
+    <title>Appointment Guru</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -15,15 +16,6 @@
             margin: 0;
             padding: 0;
             transition: background-color 0.5s ease-in-out;
-        }
-
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            transition: opacity 0.5s ease-in-out;
         }
 
         h1, h2 {
@@ -35,7 +27,7 @@
             color: white;
             padding: 10px 20px;
             border: none;
-            border-radius: 20px;
+            border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.3s ease;
         }
@@ -57,54 +49,59 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-light">
-        <a class="navbar-brand" href="">Appointment Guru</a>
         <div class="container-fluid">
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <div class="navbar-nav">
+                    <img src="{% static 'Images/logo.png' %}" style="width: 50px; height: auto;">
+                </div>
             </div>
-          </div>
-          <a href={% url 'uLogin' %}><button type="button" class="btn btn-success">User Login</button></a>&nbsp;&nbsp;
-        <a href={% url 'dLogin' %}><button type="button" class="btn btn-success">Doctor Login</button></a>&nbsp;&nbsp;
-        <a href={% url 'userSignUp' %}><button type="button" class="btn btn-success">User Signup</button></a>&nbsp;&nbsp;
+            <a href="{% url 'uLogin' %}"><button type="button" class="btn btn-success">User Login</button></a>&nbsp;&nbsp;
+            <a href="{% url 'dLogin' %}"><button type="button" class="btn btn-success">Doctor Login</button></a>&nbsp;&nbsp;
+            <a href="{% url 'userSignUp' %}"><button type="button" class="btn btn-success">User Signup</button></a>&nbsp;&nbsp;
         </div>
     </nav>
     <h1>Welcome To Appointment Guru</h1>
     <h2>Book your appointment with any doctor easily.</h2><br>
-    <div class="row">
-        <div class="col-md-4">
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">Yashodha Hospitals</h5>
-                    <img src="..." class="card-img-top" alt="...">
-                    <p class="card-text">For advertising purposes</p>
-                    <a href="" class="btn btn-primary">Go to website</a>
+    <img src="{% static 'Images/logo.png' %}" style="width: 250px; height: auto;">
+    <br><br><br>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <div class="card" style="width: 18rem; margin-left: 20px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Yashodha Hospitals</h5>
+                        <img src="..." class="card-img-top" alt="...">
+                        <p class="card-text">For advertising purposes</p>
+                        <a href="" class="btn btn-primary">Go to website</a>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">Kim's Hospitals</h5>
-                    <img src="..." class="card-img-top" alt="...">
-                    <p class="card-text">For advertising purposes</p>
-                    <a href="" class="btn btn-primary">Go somewhere</a>
+            <div class="col-md-4">
+                <div class="card" style="width: 18rem; margin-left: 20px;">
+
+                    <div class="card-body">
+                        <h5 class="card-title">Kim's Hospitals</h5>
+                        <img src="..." class="card-img-top" alt="...">
+                        <p class="card-text">For advertising purposes</p>
+                        <a href="" class="btn btn-primary">Go to website</a>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card" style="width: 18rem;">
-                <div class="card-body">
-                    <h5 class="card-title">Care Hospitals</h5>
-                    <img src="..." class="card-img-top" alt="...">
-                    <p class="card-text">For advertising purposes</p>
-                    <a href="" class="btn btn-primary">Go somewhere</a>
+            <div class="col-md-4">
+                <div class="card" style="width: 18rem; margin-left: 20px;">
+                    <div class="card-body">
+                        <h5 class="card-title">Kim's Hospitals</h5>
+                        <img src="..." class="card-img-top" alt="...">
+                        <p class="card-text">For advertising purposes</p>
+                        <a href="" class="btn btn-primary">Go to website</a>
+                    </div>
                 </div>
             </div>
+            <!-- Add more cards here as needed -->
         </div>
-        <!-- Add more cards here as needed -->
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4"></script>
 </body>

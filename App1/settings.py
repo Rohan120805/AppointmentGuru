@@ -28,6 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['appointmentguru.onrender.com','127.0.0.1']
 
+STATICFILES_DIRS=[os.path.join(BASE_DIR,'static')]
 
 # Application definition
 
