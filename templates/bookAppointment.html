@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,7 +35,8 @@
 
         body {
             font-family: Arial, sans-serif;
-            background-color: #006E86;
+            background: url("{% static 'Images/bookAppointment.jpeg' %}") no-repeat center center fixed;
+            background-size: cover;
         }
 
         form {
