@@ -11,7 +11,8 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
+            background: url("{% static 'Images/mainHome.png' %}") no-repeat center center fixed;
+            background-size: cover;
             transition: background-color 0.5s ease-in-out;
         }
 
@@ -21,7 +22,7 @@
             padding: 20px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            background-color: #fff;
+            background-color: #333;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
@@ -31,16 +32,28 @@
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
 
-        select {
-            padding: 10px 15px;
-            width: 100%;
-            margin-bottom: 20px;
-            border-radius: 5px;
+        .appointment-form {
+            color: white;
+        }
+
+        .appointment-form label {
+            color: white;
+        }
+
+        .appointment-form input,
+        .appointment-form select {
+            color: white;
+            background-color: #444;
             border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            width: 50%;
+            margin-bottom: 20px;
             transition: border-color 0.3s ease;
         }
 
-        select:focus {
+        .appointment-form input:focus,
+        .appointment-form select:focus {
             border-color: #007bff;
             outline: none;
         }
@@ -49,7 +62,7 @@
             align: center;
             width: 40%;
             height: 40px;
-            background-color: #007bff;
+            background-color: #0056b3;
             color: white;
             border: none;
             border-radius: 5px;
