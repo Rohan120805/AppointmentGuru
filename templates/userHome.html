@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,9 +12,8 @@
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background-color: #006E86;
-            margin: 0;
-            padding: 0;
+            background: url("{% static 'Images/mainHome.png' %}") no-repeat center center fixed;
+            background-size: cover;
             transition: background-color 0.5s ease-in-out;
         }
 
@@ -26,20 +26,25 @@
             transition: opacity 0.5s ease-in-out;
         }
 
-        h1, h2 {
+        h1 {
+            color: #333;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        h2, h4 {
             color: #fff;
             text-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
         }
 
         .button {
             display: inline-block;
-            padding: 10px 20px;
+            padding: 15px 25px;
             font-size: 16px;
             font-weight: bold;
             text-decoration: none;
             color: #006E86;
-            background-color: #006E86; /* Changed to Bootstrap primary button color */
-            border-radius: 5px;
+            background-color: #006E86;
+            border-radius: 25px;
             cursor: pointer;
             transition: background-color 0.2s ease-in-out;
         }
@@ -52,7 +57,7 @@
             width: 300px;
             margin: 20px auto;
             padding: 20px;
-            background-color: #fff;
+            background-color: #333;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
             transition: box-shadow 0.2s ease-in-out;
@@ -67,15 +72,15 @@
             padding: 10px;
             margin-bottom: 10px;
             box-sizing: border-box;
-            background-color: #333;
+            background-color: #fff;
             color: #333;
             border: none;
-            border-radius: 5px;
+            border-radius: 25px;
             transition: background-color 0.2s ease-in-out;
         }
 
         input:focus {
-            background-color: #555;
+            background-color: #fff;
         }
 
         .warning {
@@ -85,9 +90,10 @@
         }
 
         .btn {
+          padding: 15px 25px;
           background-color: #006E86;
           border: none;
-          border-radius: 5px;
+          border-radius: 25px;
           cursor: pointer;
           transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
       }
@@ -117,7 +123,7 @@
       </nav>
       <h1>Welcome {{result.name}}.</h1>
       <form>
-        Calculate your BMI<br>
+        <h4>Calculate your BMI</h4><br>
         <input type="number" id="weight" placeholder="Enter your weight in kg"><br>
         <input type="number" id="height" placeholder="Enter your height in meters"><br>
         <button type="button" onclick="calculateBMI()">Calculate BMI</button>
