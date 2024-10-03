@@ -3,48 +3,69 @@
 <head>
     <title>Select Slot</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            transition: background-color 0.5s ease-in-out;
+        }
+
         .container {
             max-width: 600px;
-            margin: 0 auto;
+            margin: 50px auto;
             padding: 20px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        
+
+        .container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
         select {
             padding: 10px 15px;
-        }
-        
-        .btn-book {
             width: 100%;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            transition: border-color 0.3s ease;
+        }
+
+        select:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        .btn-book {
+            align: center;
+            width: 40%;
             height: 40px;
-            background-color: #4CAF50;
-            color: #fff;
+            background-color: #007bff;
+            color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
         }
-        
+
         .btn-book:hover {
-            background-color: #3e8e41;
-        }
-        
-        .error {
-            color: #f44336;
-            font-size: 14px;
-            margin-bottom: 10px;
+            background-color: #0056b3;
+            transform: scale(1.05);
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Doctor Phone Number: {{ phoneNumber }}</h1>
         <form action="{% url 'selectSlot' phoneNumber %}" method='post' class="appointment-form">
             {% csrf_token %}
             <div class="form-group">
                 <label for="appointmentDate">Select Date:</label>
                 <input type="date" name="appointmentDate" value="{{ tomorrow|date:"Y-m-d" }}" min="{{ tomorrow|date:"Y-m-d" }}" required>
             </div>
+            <br><br>
             <div class="form-group">
                 <label for="slot">Select Slot:</label>
                 <select name="slot" required>
@@ -53,6 +74,7 @@
                     {% endfor %}
                 </select>
             </div>
+            <br><br><br>
             <input type="submit" value="Book Slot" class="btn-book">
         </form>
     </div>

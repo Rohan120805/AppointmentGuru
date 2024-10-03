@@ -9,6 +9,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Home Page</title>
     <style>
+        table {
+            padding: 15px 20px;
+            border-radius: 35px;
+            border-collapse: collapse;
+            width: 50%;
+            margin: 20px auto;
+            background-color: #333;
+            color: white;
+            border: 1px solid white;
+        }
+    
+        th, td {
+            text-align: center;
+            transition: background-color 0.3s ease;
+            color: white;
+            border-left: 1px solid white; /* Add border between columns */
+        }
+    
+        tr:hover {
+            background-color: #ddd;
+            color: black; /* Change text color on hover */
+        }
+    
+        th:first-child, td:first-child {
+            border-left: none; /* Remove border from the first column */
+        }
+
         body {
             font-family: Arial, sans-serif;
             text-align: center;
@@ -38,7 +65,7 @@
 
         .button {
             display: inline-block;
-            padding: 15px 25px;
+            padding: 15px 20px;
             font-size: 16px;
             font-weight: bold;
             text-decoration: none;
@@ -90,7 +117,7 @@
         }
 
         .btn {
-          padding: 15px 25px;
+          padding: 10px 25px;
           background-color: #006E86;
           border: none;
           border-radius: 25px;
@@ -103,6 +130,11 @@
           box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
           transform: scale(1.1);
       }
+
+      #bmiResult {
+        color: white;
+        font-size: 1.5em;
+      }
     </style>
 </head>
 <body>
@@ -113,8 +145,9 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-              <a class="nav-link" href={% url 'yourAppointments' %}><button class='btn btn-danger'>Your Appointments</button></a>
-              <a class="nav-link" href={% url 'bookAppointment' %}><button class='btn btn-danger'>Book Appointments</button></a>
+                <img src="{% static 'Images/logo.png' %}" style="width: 50px; height: auto;">
+                <a class="nav-link" href={% url 'yourAppointments' %}><button class='btn btn-danger'>Your Appointments</button></a>
+                <a class="nav-link" href={% url 'bookAppointment' %}><button class='btn btn-danger'>Book Appointments</button></a>
               {% comment %} <a class="nav-link" href={% url 'userEditDetails' %}><button class='btn btn-danger'>Edit Details</button></a> {% endcomment %}
             </div>
           </div>
@@ -129,6 +162,33 @@
         <button type="button" onclick="calculateBMI()">Calculate BMI</button>
         <p id="bmiResult"></p>
       </form>
+      {% if requirements %}
+   <h1>Daily Requirements</h1>
+   <table class="table">
+     <thead>
+       <tr>
+         <th>Calories</th>
+         <th>Proteins (g)</th>
+         <th>Fats (g)</th>
+         <th>Sodium (mg)</th>
+         <th>Fiber (g)</th>
+         <th>Carbs (g)</th>
+         <th>Sugar (g)</th>
+       </tr>
+     </thead>
+     <tbody>
+       <tr>
+         <td>{{ requirements.Calories }}</td>
+         <td>{{ requirements.Proteins }}</td>
+         <td>{{ requirements.Fats }}</td>
+         <td>{{ requirements.Sodium }}</td>
+         <td>{{ requirements.Fiber }}</td>
+         <td>{{ requirements.Carbs }}</td>
+         <td>{{ requirements.Sugar }}</td>
+       </tr>
+     </tbody>
+   </table>
+   {% endif %}
       <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4"></script>
       <script>
         function calculateBMI() {
