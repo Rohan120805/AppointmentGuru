@@ -175,7 +175,7 @@ def uLogin(request):
 
 def userHome(request):
     user = request.session.get('user')
-    return render(request, 'userHome.html', {'result': user})
+    return render(request, 'userHome.html', {'result': user, 'requirements': daily(user["age"], user["gender"])})
 
 def dLogin(request):
     render(request, 'docLogin.html')
