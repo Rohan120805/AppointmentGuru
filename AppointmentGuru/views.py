@@ -6,7 +6,7 @@ from .models import Doctor, Customer, Appointment, Hospital
 def home(request):
   return render(request,'home.html',{'name':'Rohan'})
 
-def daily(age, gender):#this fn is to determine the min requirements based on age&gender, use in compute fn
+def daily(age, gender):
     DAILY_REQUIREMENTS = {
         'Female': {
             (4, 8):  {'Calories': 1200, 'Proteins': 19, 'Fats': 70, 'Sodium': 2300, 'Fiber': 25, 'Carbs': 260, 'Sugar': 50},
@@ -85,9 +85,11 @@ def add_user(request):
             invalid = True
         else:
             try:
-                if Customer.objects.get(email=uemail) or Customer.objects.get(phoneNumber=phNum):
+                if Customer.objects.filter(email=uemail).exists():
                     userExists = True
-            except:
+                elif Customer.objects.filter(phoneNumber=phNum).exists():
+                    userExists = True
+            except Customer.DoesNotExist:
                 userExists = False
         if invalid or userExists:
             return render(request, 'add_user.html', {'invalid': invalid, 'userExists': userExists})
@@ -126,9 +128,9 @@ def add_doctor(request):
             invalid = True
         else:
             try:
-                if Doctor.objects.get(email=demail) or Doctor.objects.get(phoneNumber=phNum):
+                if Doctor.objects.filter(email=demail).exists() or Doctor.objects.filter(phoneNumber=phNum).exists():
                     doctorExists = True
-            except:
+            except Doctor.DoesNotExist:
                 doctorExists = False
         if hosId==id.code:
             if invalid or doctorExists:
