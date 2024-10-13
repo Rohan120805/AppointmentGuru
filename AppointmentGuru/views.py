@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import pandas as pd
 from datetime import date, timedelta
 from .models import Doctor, Customer, Appointment, Hospital
@@ -166,7 +166,7 @@ def uLogin(request):
             if userDetails.password==pwd:
                 request.session['user'] = user
                 daily(user["age"], user["gender"])
-                return render(request, "userHome.html", {'result': user, 'requirements': daily(user["age"], user["gender"])})
+                return redirect('userHome')
             else:
                 return render(request, 'userLogin.html', {'error': True})
         else:

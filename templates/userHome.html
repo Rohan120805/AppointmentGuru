@@ -145,7 +145,7 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <img src="{% static 'Images/logo.png' %}" style="width: 75px; height: auto;">
+                <a class="nav-link" href={% url 'userHome' %}><img src="{% static 'Images/logo.png' %}" style="width: 75px; height: auto;"></a>
                 <a class="nav-link" href={% url 'yourAppointments' %}><button class='btn btn-danger'>Your Appointments</button></a>
                 <a class="nav-link" href={% url 'bookAppointment' %}><button class='btn btn-danger'>Book Appointments</button></a>
               {% comment %} <a class="nav-link" href={% url 'userEditDetails' %}><button class='btn btn-danger'>Edit Details</button></a> {% endcomment %}
@@ -160,7 +160,7 @@
         <input type="number" id="weight" placeholder="Enter your weight in kg"><br>
         <input type="number" id="height" placeholder="Enter your height in meters"><br>
         <button type="button" onclick="calculateBMI()">Calculate BMI</button>
-        <p id="bmiResult"></p>
+        <div id="bmiResult"></div>
       </form>
       {% if requirements %}
    <h1>Daily Requirements</h1>
@@ -196,7 +196,15 @@
             var height = parseFloat(document.getElementById('height').value);
             if (weight && height) {
                 var bmi = weight / (height * height);
-                document.getElementById('bmiResult').innerText = 'Your BMI is ' + bmi.toFixed(2);
+                var bmiMessage = 'Your BMI is ' + bmi.toFixed(2) + '. ';
+                if (bmi < 18) {
+                    bmiMessage += 'You are underweight.';
+                } else if (bmi < 25) {
+                    bmiMessage += 'You are healthy.';
+                } else {
+                    bmiMessage += 'You are overweight.';
+                }
+                document.getElementById('bmiResult').innerText = bmiMessage;
             } else {
                 document.getElementById('bmiResult').innerText = 'Please enter both weight and height.';
             }
