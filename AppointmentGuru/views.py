@@ -265,7 +265,7 @@ def selectSlot(request, doctorPhoneNumber):#success
 
         appointment = Appointment(doctorName=doctor.doctorName, doctorMailId=doctor.email, doctorPhoneNumber=doctor.phoneNumber, patientName=user['name'], patientMailId=user['email'], patientPhoneNumber=user['phoneNumber'], date=appointmentDate, time=slot, hospitalName=doctor.hospitalName, branch=doctor.branch, specialisation=doctor.specialisation)
         appointment.save()
-
+        #sends mail to users after booking appointment
         subject = 'Appointment Confirmation'
         message = f'Dear {user["name"]},\n\nYour appointment with Dr. {doctor.doctorName} on {appointmentDate} at {slot} has been confirmed.\n\nThank you,\nAppointment Guru'
         from_email = settings.DEFAULT_FROM_EMAIL
