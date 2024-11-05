@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #212529;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.5s ease-in-out;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        h1, h2 {
+            color: #fff;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            color: #fff;
+            background-color: #007bff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .button:hover {
+            background-color: #0069d9;
+        }
+
+        form {
+            width: 350px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            transition: box-shadow 0.2s ease-in-out;
+        }
+
+        form:hover {
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            background-color: #444;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        input:focus {
+            background-color: #555;
+        }
+
+        .warning {
+            color: #ff0000;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .radio-label {
+            display: inline-block;
+            margin-left: 5px;
+        }
+        
+        input[type="radio"] {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+    <body>
+        <h1>Sign Up to Book Appointments with Us!</h1>
+
+        <form id="signupForm" action="" method="post">
+            {% csrf_token %}
+            Name: <input type="text" name="name" required><br>
+            Email: <input type="text" name="email" required><br>
+            Phone Number: <input type="text" name="phNum" required><br>
+            Age: <input type="number" name="age" required><br>
+            <label for="gender">Gender:</label>
+            <select id="gender" name="gender" required>
+                <option value="None">None</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
+            <p id="genderWarning" style="color: red; display: none;">Please select a gender other than "None".</p>
+            <br>
+            Password: <input type="password" name="pwd" required><br>
+            {% if invalid %}
+                <p style="color: red;">Invalid email. Please enter a valid Gmail address.</p>
+            {% endif %}
+            {% if userExists %}
+                <p style="color: red;">User with this email or phone number already exists.</p>
+            {% endif %}
+            <button class="button" type="submit">Sign Up</button>
+        </form>
+    
+        <script>
+            document.getElementById('signupForm').addEventListener('submit', function(event) {
+                var gender = document.getElementById('gender').value;
+                if (gender === 'None') {
+                    event.preventDefault();
+                    document.getElementById('genderWarning').style.display = 'block';
+                }
+            });
+        </script>
+    </body>
+</html>

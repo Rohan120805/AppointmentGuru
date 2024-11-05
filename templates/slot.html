@@ -1,0 +1,138 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+    rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+    crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Slot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: url("{% static 'Images/mainHome.png' %}") no-repeat center center fixed;
+            background-size: cover;
+            transition: background-color 0.5s ease-in-out;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #333;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .container:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .appointment-form {
+            color: white;
+        }
+
+        .appointment-form label {
+            color: white;
+        }
+
+        .appointment-form input,
+        .appointment-form select {
+            color: white;
+            background-color: #444;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            width: 50%;
+            margin-bottom: 20px;
+            transition: border-color 0.3s ease;
+        }
+
+        .appointment-form input:focus,
+        .appointment-form select:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+
+        .btn-book {
+            align: center;
+            width: 40%;
+            height: 40px;
+            background-color: #0056b3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .btn-book:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        .btn {
+            padding: 10px 25px;
+            background-color: #006E86;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
+        }
+  
+        .btn:hover {
+            background-color: #006F94;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-light">
+        <div class="container-fluid">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <img src="{% static 'Images/logo.png' %}" style="width: 75px; height: auto;">
+                <a class="nav-link" href={% url 'yourAppointments' %}><button class='btn btn-danger'>Your Appointments</button></a>
+                <a class="nav-link" href={% url 'bookAppointment' %}><button class='btn btn-danger'>Book Appointments</button></a>
+              {% comment %} <a class="nav-link" href={% url 'userEditDetails' %}><button class='btn btn-danger'>Edit Details</button></a> {% endcomment %}
+            </div>
+          </div>
+        </div>
+        <a class="navbar-brand" href="{% url 'home' %}"><button class='btn btn-danger'>Logout</button></a>
+      </nav>
+    <div class="container">
+        <form action="{% url 'selectSlot' phoneNumber %}" method='post' class="appointment-form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="appointmentDate">Select Date:</label>
+                <input type="date" name="appointmentDate" value="{{ tomorrow|date:"Y-m-d" }}" min="{{ tomorrow|date:"Y-m-d" }}" max="{{ end|date:"Y-m-d" }}" required>
+            </div>
+            <br><br>
+            <div class="form-group">
+                <label for="slot">Select Slot:</label>
+                <select name="slot" required>
+                    {% for slot in slots %}
+                    <option value="{{ slot }}">{{ slot }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <br><br><br>
+            <input type="submit" value="Book Slot" class="btn-book">
+            {% if error %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+            {% endif %}
+        </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4"></script>
+</body>
+</html>

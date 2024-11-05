@@ -1,0 +1,117 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+    rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+    crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Guru</title>
+    <style>
+        @media (max-width: 768px) {
+          .table {
+            font-size: 14px;
+          }
+        }
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: url("{% static 'Images/home.png' %}") no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.5s ease-in-out;
+        }
+
+        h1, h2 {
+            color: #333;
+        }
+
+        .btn {
+            background-color: #006E86;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #006F94;
+            transform: scale(1.2);
+        }
+
+        .btn-danger {
+            background-color: #006E86;
+        }
+
+        .btn-danger:hover {
+            background-color: #006E86;
+            transform: scale(1.2);
+        }
+        
+        .navbar-toggler-icon {
+            background-color: grey; /* Change to a visible color */
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+                <a class="nav-link" href="{% url 'userHome' %}"><img src="{% static 'Images/logo.png' %}" style="width: 75px; height: auto;"></a>
+                <a href="{% url 'uLogin' %}"><button type="button" class="btn btn-success">User Login</button></a>&nbsp;&nbsp;
+                <a href="{% url 'dLogin' %}"><button type="button" class="btn btn-success">Doctor Login</button></a>&nbsp;&nbsp;
+                <a href="{% url 'userSignUp' %}"><button type="button" class="btn btn-success">User Signup</button></a>&nbsp;&nbsp;
+            </div>
+          </div>
+        </div>
+      </nav>
+    <h1>Welcome To Appointment Guru</h1>
+    <h2>Book your appointment with any doctor easily.</h2><br>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <div class="card transparent-card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Yashoda Hospitals</h5>
+                        <img src="{% static 'Images/yashodaHospitals.png' %}"  class="card-img" alt="..." style="width: 210px; helght: 400px">
+                        <p class="card-text">For advertising purposes</p>
+                        <a href="https://www.yashodahospitals.com" class="btn btn-primary" target="">Go to website</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card transparent-card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Kim's Hospitals</h5>
+                        <img src="{% static 'Images/kimsHospitals.png' %}" class="card-img" alt="..." style="width: 200px; helght: 100px">
+                        <p class="card-text">For advertising purposes</p>
+                        <a href="https://www.kimshospitals.com" class="btn btn-primary" target="">Go to website</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card" style="width: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Star Hospitals</h5>
+                        <img src="{% static 'Images/starHospitals.png' %}" class="card-img" alt="..." style="width: 210px; helght: 250px">
+                        <p class="card-text">For advertising purposes</p>
+                        <a href="https://starhospitals.in" class="btn btn-primary" target="">Go to website</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Add more cards here as needed -->
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

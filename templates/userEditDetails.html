@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="{% url 'userEditDetails' %}" method="post">
+        {% csrf_token %}
+        Data: {{details}}<br>
+        <label for="choice">Choose the value you want to change:</label>
+            <select name="choice" id="choice">
+                <option value="userName">User Name</option>
+                <option value="email">EMail</option>
+                <option value="phoneNumber">Phone Number</option>
+                <option value="age">Age</option>
+                <option value="gender">Gender</option>
+                <option value="password">Password</option>
+            </select>
+        <br>
+        Enter new Value: <input type="text", name="value", required><br>
+        <input type="submit">
+    </form>
+</body>
+</html>

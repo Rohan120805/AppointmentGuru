@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #212529;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.5s ease-in-out;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        h1, h2 {
+            color: #fff;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            color: #fff;
+            background-color: #007bff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .button:hover {
+            background-color: #0069d9;
+        }
+
+        form {
+            width: 450px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            transition: box-shadow 0.2s ease-in-out;
+        }
+
+        form:hover {
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+        }
+
+        input {
+            width: 50%;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            background-color: #444;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        input:focus {
+            background-color: #555;
+        }
+
+        .warning {
+            color: #ff0000;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .radio-label {
+            display: inline-block;
+            margin-left: 5px;
+        }
+        
+        input[type="radio"] {
+            margin-right: 5px;
+        }
+
+        .warning {
+            color: red;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <form id="addDoctorForm" action="" method="post" align='left'>
+        {% csrf_token %}
+        Name: <input type="text" name="name" required><br>
+        {% if name == "" %}
+            <p style="color: red;">**Please enter your name**</p>
+        {% endif %}
+        Email: <input type="text" name="email" required><br>
+        {% if invalid %}
+            <p style="color: red;">Invalid Email-ID</p>
+        {% endif %}
+        Phone Number: <input type="text" name="phNum" required><br>
+        {% if doctorExists %}
+            <p style="color: red;">Doctor already exists</p>
+        {% endif %}
+        Age: <input type="number" name="age" required><br>
+        <label for="gender">Gender:</label>
+        <select id="gender" name="gender" required>
+            <option value="None">None</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+        </select><br>
+        <p id="genderWarning" style="color: red; display: none;">Please select a gender other than "None".</p>
+        <label for='specialisation'>Specialization:</label>
+        <select id="specialisation" name="specialisation" required>
+            <option value="None">None</option>
+            <option value="cardiology">Cardiology</option>
+            <option value="gastroenterology">Gastroenterology</option>
+            <option value="nephrology">Nephrology</option>
+            <option value="neurology">Neurology</option>
+            <option value="oncology">Oncology</option>
+        </select><br>
+        <p id="specialisationWarning" class="warning">Please select a specialization other than "None".</p>
+        <label for='hosName'>Hospital Name:</label>
+        <select id="hosName" name="hosName" required>
+            <option value="None">None</option>
+            <option value="apollo hospitals">Apollo Hospitals</option>
+            <option value="care hospitals">Care Hospitals</option>
+            <option value="kim's hospitals">Kim's Hospitals</option>
+            <option value="star hospitals">Star Hospitals</option>
+            <option value="yashoda hospitals">Yashoda Hospitals</option>
+        </select><br>
+        <p id="hospitalWarning" class="warning">Please select a hospital other than "None".</p>
+
+        <label for='branch'>Hospital Branch:</label>
+        <select id='branch' name='branch' required>
+            <option value='None'>None</option>
+            <option value='banjara hills'>Banjara Hills</option>
+            <option value='gachibowli'>Gachibowli</option>
+            <option value='jubilee hills'>Jubilee Hills</option>
+            <option value='malakpet'>Malakpet</option>
+            <option value='secunderabad'>Secunderabad</option>
+        </select><br>
+        <p id="branchWarning" class="warning">Please enter a branch other than "None".</p>
+        <label for="max_patients_per_slot">Max Patients Per Slot:</label>
+        <input type="number" name="max_patients_per_slot" class="form-control" required>
+        Hospital ID: <input type="text" name="hosId" required><br>
+        {% if invalidID %}
+            <p style="color: red;">Invalid Hospital ID</p>
+        {% endif %}
+        Password: <input type="text" name="pwd" required><br>
+        <button class="button" type="submit">Sign Up</button>
+    </form>
+</body>
+<script>
+    document.getElementById('addDoctorForm').addEventListener('submit', function(event) {
+        let valid = true;
+        
+        var gender = document.getElementById('gender').value;
+        if (gender === 'None') {
+            event.preventDefault();
+            document.getElementById('genderWarning').style.display = 'block';
+        }
+
+        var specialisation = document.getElementById('specialisation').value;
+        var hospital = document.getElementById('hosName').value;
+        var branch = document.getElementById('branch').value;
+
+        if (specialisation === 'None') {
+            document.getElementById('specialisationWarning').style.display = 'block';
+            valid = false;
+        } else {
+            document.getElementById('specialisationWarning').style.display = 'none';
+        }
+
+        if (hospital === 'None') {
+            document.getElementById('hospitalWarning').style.display = 'block';
+            valid = false;
+        } else {
+            document.getElementById('hospitalWarning').style.display = 'none';
+        }
+
+        if (branch === 'None') {
+            document.getElementById('branchWarning').style.display = 'block';
+            valid = false;
+        } else {
+            document.getElementById('branchWarning').style.display = 'none';
+        }
+
+        if (!valid) {
+            event.preventDefault();
+        }
+    });
+</script>
+</html>

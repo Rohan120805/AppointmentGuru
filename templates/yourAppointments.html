@@ -1,0 +1,133 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+    rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+    crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Appointments</title>
+    <style>
+        @media (max-width: 768px) {
+            .table {
+              font-size: 14px;
+            }
+          }
+        body {
+            font-family: Arial, sans-serif;
+            background: url("{% static 'Images/yourAppointments.png' %}") no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            margin: 20px auto;
+            max-width: 800px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 50%;
+            margin-top: 20px;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+
+        th {
+            background-color: #fff;
+            color: #333;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        .btn {
+            background-color: #006E86;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #006F94;
+            transform: scale(1.2);
+        }
+
+        .btn-danger {
+            background-color: #006E86;
+        }
+
+        .btn-danger:hover {
+            background-color: #006E86;
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+              <a class="nav-link" href="{% url 'userHome' %}"><img src="{% static 'Images/logo.png' %}" style="width: 75px; height: auto;"></a>
+              <a class="nav-link" href="{% url 'yourAppointments' %}"><button class='btn btn-danger'>Your Appointments</button></a>
+              <a class="nav-link" href="{% url 'bookAppointment' %}"><button class='btn btn-danger'>Book Appointments</button></a>
+              {% comment %} <a class="nav-link" href="{% url 'userEditDetails' %}"><button class='btn btn-danger'>Edit Details</button></a> {% endcomment %}
+            </div>
+          </div>
+          <a class="navbar-brand" href="{% url 'home' %}"><button class='btn btn-danger'>Logout</button></a>
+        </div>
+    </nav>
+    <h1 align='center'>Your Appointments</h1>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr style="text-align: center">
+                    <th> Appointment Date </th>
+                    <th> Appointment Time </th>
+                    <th> Doctor Name </th>
+                    <th>Hospital Name</th>
+                    <th>Branch</th>
+                    <th>Specialisation</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for appointment in appointments %}
+                <tr style="text-align: center">
+                    <td> {{appointment.date}} </td>
+                    <td>{{appointment.time}}</td>
+                    <td>{{appointment.doctorName}}</td>
+                    <td>{{appointment.hospitalName}}</td>
+                    <td>{{appointment.branch}}</td>
+                    <td>{{appointment.specialisation}}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

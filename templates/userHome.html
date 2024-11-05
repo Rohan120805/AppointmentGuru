@@ -1,0 +1,334 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+    rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+    crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Home Page</title>
+    <style>
+        @media (max-width: 768px) {
+          .table {
+            font-size: 14px;
+          }
+        }
+
+        table {
+            padding: 15px 20px;
+            border-radius: 35px;
+            border-collapse: collapse;
+            width: 50%;
+            margin: 20px auto;
+            background-color: #333;
+            color: white;
+            border: 1px solid white;
+        }
+    
+        th, td {
+            text-align: center;
+            transition: background-color 0.3s ease;
+            color: white;
+            border-left: 1px solid white; /* Add border between columns */
+        }
+    
+        tr:hover {
+            background-color: grey;
+            color: black;
+        }
+    
+        th:first-child, td:first-child {
+            border-left: none; /* Remove border from the first column */
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: url("{% static 'Images/mainHome.png' %}") no-repeat center center fixed;
+            background-size: cover;
+            transition: background-color 0.5s ease-in-out;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        h1 {
+            color: #333;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        h2, h4 {
+            color: #fff;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .button {
+            display: inline-block;
+            padding: 15px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            color: #006E86;
+            background-color: #006E86;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .button:hover {
+            background-color: #006E86;
+        }
+
+        form {
+            width: 300px;
+            height: 300px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #333;
+            border-radius: 25px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            transition: box-shadow 0.2s ease-in-out;
+        }
+
+        form:hover {
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+            border-radius: 25px;
+            width: 320px;
+            height: 320px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            background-color: #fff;
+            color: #333;
+            border: none;
+            border-radius: 25px;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        input:focus {
+            background-color: #fff;
+        }
+
+        .warning {
+            color: #ff0000;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .btn {
+          padding: 10px 25px;
+          background-color: #006E86;
+          border: none;
+          border-radius: 25px;
+          cursor: pointer;
+          transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
+      }
+
+      .btn:hover {
+          background-color: #006F94;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+          transform: scale(1.1);
+      }
+
+      #bmiResult {
+        color: white;
+        font-size: 1.5em;
+      }
+
+      .chatbot-button {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        font-size: 24px;
+        cursor: pointer;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .chatbox {
+        position: fixed;
+        bottom: 80px;
+        right: 20px;
+        width: 300px;
+        max-height: 400px;
+        background-color: white;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        display: none;
+        flex-direction: column;
+    }
+
+    .chatbox-header {
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .chatbox-messages {
+        flex-grow: 1;
+        overflow-y: auto;
+        margin-bottom: 10px;
+    }
+
+    .chatbox-input {
+        display: flex;
+    }
+
+    .chatbox-input input {
+        flex-grow: 1;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .chatbox-input button {
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 15px;
+        margin-left: 5px;
+    }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
+            <a class="nav-link" href="{% url 'userHome' %}"><img src="{% static 'Images/logo.png' %}" style="width: 75px; height: auto;"></a>
+            <a class="nav-link" href="{% url 'yourAppointments' %}"><button class='btn btn-danger'>Your Appointments</button></a>
+            <a class="nav-link" href="{% url 'bookAppointment' %}"><button class='btn btn-danger'>Book Appointments</button></a>
+          </div>
+        </div>
+        <a class="navbar-brand" href="{% url 'home' %}"><button class='btn btn-danger'>Logout</button></a>
+      </div>
+    </nav>
+      <h1>Welcome {{result.name}}.</h1>
+      <form>
+        <h4>Calculate your BMI</h4><br>
+        <input type="number" id="weight" placeholder="Enter your weight in kg"><br>
+        <input type="number" id="height" placeholder="Enter your height in meters"><br>
+        <button type="button" onclick="calculateBMI()">Calculate BMI</button>
+        <div id="bmiResult"></div>
+      </form>
+      {% if requirements %}
+   <h1>Daily Requirements</h1>
+   <table class="table">
+     <thead>
+       <tr>
+         <th>Calories</th>
+         <th>Proteins</th>
+         <th>Fats</th>
+         <th>Sodium</th>
+         <th>Fiber</th>
+         <th>Carbs</th>
+         <th>Sugar</th>
+       </tr>
+     </thead>
+     <tbody>
+       <tr>
+         <td>{{ requirements.Calories }} g</td>
+         <td>{{ requirements.Proteins }} g</td>
+         <td>{{ requirements.Fats }} g</td>
+         <td>{{ requirements.Sodium }} mg</td>
+         <td>{{ requirements.Fiber }} g</td>
+         <td>{{ requirements.Carbs }} g</td>
+         <td>{{ requirements.Sugar }} g</td>
+       </tr>
+     </tbody>
+   </table>
+   {% endif %}
+
+   <button class="chatbot-button" onclick="toggleChatbox()">💬</button>
+    <!-- Chatbox -->
+    <div class="chatbox" id="chatbox">
+        <div class="chatbox-header">Chatbot</div>
+        <div class="chatbox-messages" id="chatboxMessages"></div>
+        <div class="chatbox-input">
+            <input type="text" id="chatboxInput" placeholder="Type a message...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+        function toggleChatbox() {
+            const chatbox = document.getElementById('chatbox');
+            chatbox.style.display = chatbox.style.display === 'none' ? 'flex' : 'none';
+        }
+
+        function sendMessage() {
+            const userInput = document.getElementById('chatboxInput').value;
+            const chatboxMessages = document.getElementById('chatboxMessages');
+
+            // Display user message
+            const userMessage = document.createElement('div');
+            userMessage.textContent = 'You: ' + userInput;
+            chatboxMessages.appendChild(userMessage);
+
+            // Clear input
+            document.getElementById('chatboxInput').value = '';
+
+            // Send message to chatbot
+            fetch('/chatbot/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message: userInput }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display chatbot response
+                const chatbotResponse = document.createElement('div');
+                chatbotResponse.textContent = 'Chatbot: ' + data.response;
+                chatboxMessages.appendChild(chatbotResponse);
+
+                // Scroll to the bottom
+                chatboxMessages.scrollTop = chatboxMessages.scrollHeight;
+            });
+        }
+    </script>
+      <script>
+        function calculateBMI() {
+            var weight = parseFloat(document.getElementById('weight').value);
+            var height = parseFloat(document.getElementById('height').value);
+            if (weight && height) {
+                var bmi = weight / (height * height);
+                var bmiMessage = 'Your BMI is ' + bmi.toFixed(2) + '. ';
+                if (bmi < 18) {
+                    bmiMessage += 'You are underweight.';
+                } else if (bmi < 25) {
+                    bmiMessage += 'You are healthy.';
+                } else {
+                    bmiMessage += 'You are overweight.';
+                }
+                document.getElementById('bmiResult').innerText = bmiMessage;
+            } else {
+                document.getElementById('bmiResult').innerText = 'Please enter both weight and height.';
+            }
+        }
+      </script>
+</body>
+</html>
