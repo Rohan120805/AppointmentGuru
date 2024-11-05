@@ -251,6 +251,7 @@ def selectSlot(request, doctorPhoneNumber):#success
         #user: name, email, phoneNumber, age, gender
         #doctor: doctorName, email, phoneNumber, age, gender, specialisation, hospitalName, branch, time
         #appointment: doctorName, doctorMailId, doctorPhoneNumber, patientName, patientMailId, patientPhoneNumber, date, time, hospitalName, branch, specialisation
+        #checks the number of appointments in a slot
         appointments = Appointment.objects.filter(doctorPhoneNumber=doctorPhoneNumber, date=appointmentDate, time=slot)
         if appointments.count() >= doctor.max_patients_per_slot:
             return render(request, 'slot.html', {
