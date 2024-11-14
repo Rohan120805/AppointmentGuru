@@ -45,7 +45,6 @@ pydantic_core==2.23.4
 Pygments==2.18.0
 python-dateutil==2.9.0.post0
 pytz==2024.1
-pywin32==306
 pyzmq==26.2.0
 requests==2.32.3
 scikit-learn==1.5.2
@@ -63,4 +62,3 @@ tzdata==2024.1
 urllib3==2.2.3
 wcwidth==0.2.13
 yarl==1.17.1
-gunicorn == 22.0.0
