@@ -9,6 +9,7 @@ urlpatterns=[
     path('userLogin/userHome/bookAppointment', views.bookAppointment, name='bookAppointment'),
     path('userLogin/userHome/bookAppointment/selectSlot/<str:doctorPhoneNumber>/', views.selectSlot, name='selectSlot'),    
     path('userLogin/userHome/userEditDetails', views.uEditDetails, name='userEditDetails'),
+    path('userLogin/userHome/insurance_predictor/', views.insurance_predictor, name='insurance_predictor'),
     path('doctorSignUp/', views.add_doctor, name='doctorSignUp'),
     path('doctorLogin/', views.dLogin, name='dLogin'),
     path('doctorLogin/doctorHome/doctorAppointments/', views.doctorAppointments, name='doctorAppointments'),

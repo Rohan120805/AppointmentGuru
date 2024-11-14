@@ -1,0 +1,199 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+        rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+        crossorigin="anonymous">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>User Home Page</title>
+        <style>
+            @media (max-width: 768px) {
+              .table {
+                font-size: 14px;
+              }
+            }
+    
+            table {
+                padding: 15px 20px;
+                border-radius: 35px;
+                border-collapse: collapse;
+                width: 50%;
+                margin: 20px auto;
+                background-color: #333;
+                color: white;
+                border: 1px solid white;
+            }
+        
+            th, td {
+                text-align: center;
+                transition: background-color 0.3s ease;
+                color: white;
+                border-left: 1px solid white; /* Add border between columns */
+            }
+        
+            tr:hover {
+                background-color: grey;
+                color: black;
+            }
+        
+            th:first-child, td:first-child {
+                border-left: none; /* Remove border from the first column */
+            }
+    
+            body {
+                font-family: Arial, sans-serif;
+                text-align: center;
+                background: url("{% static 'Images/mainHome.png' %}") no-repeat center center fixed;
+                background-size: cover;
+                transition: background-color 0.5s ease-in-out;
+            }
+    
+            .container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                height: 100vh;
+                transition: opacity 0.5s ease-in-out;
+            }
+    
+            h1 {
+                color: #333;
+                text-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            }
+    
+            h2, h4 {
+                color: #333;
+                text-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            }
+    
+            .button {
+                display: inline-block;
+                padding: 15px 20px;
+                font-size: 16px;
+                font-weight: bold;
+                text-decoration: none;
+                color: #006E86;
+                background-color: #006E86;
+                border-radius: 25px;
+                cursor: pointer;
+                transition: background-color 0.2s ease-in-out;
+            }
+    
+            .button:hover {
+                background-color: #006E86;
+            }
+    
+            form {
+                width: 300px;
+                height: 500px;
+                margin: 20px auto;
+                padding: 20px;
+                background-color: #fff;
+                border-radius: 25px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+                transition: box-shadow 0.2s ease-in-out;
+            }
+    
+            form:hover {
+                box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+                border-radius: 25px;
+                width: 320px;
+                height: 520px;
+            }
+    
+            input {
+                width: 100%;
+                padding: 10px;
+                margin-bottom: 10px;
+                box-sizing: border-box;
+                background-color: grey;
+                color: #333;
+                border: none;
+                border-radius: 25px;
+                transition: background-color 0.2s ease-in-out;
+            }
+    
+            input:focus {
+                background-color: #fff;
+            }
+    
+            .warning {
+                color: #ff0000;
+                font-size: 14px;
+                margin-bottom: 10px;
+            }
+    
+            .btn {
+              padding: 10px 25px;
+              background-color: #006E86;
+              border: none;
+              border-radius: 25px;
+              cursor: pointer;
+              transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
+          }
+    
+          .btn:hover {
+              background-color: #006F94;
+              box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+              transform: scale(1.1);
+          }
+    
+          #bmiResult {
+            color: white;
+            font-size: 1.5em;
+          }
+        </style>
+    </head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+              <a class="nav-link" href="{% url 'userHome' %}"><img src="{% static 'Images/logo.png' %}" style="width: 75px; height: auto;"></a>
+              <a class="nav-link" href="{% url 'yourAppointments' %}"><button class='btn btn-danger'>Your Appointments</button></a>
+              <a class="nav-link" href="{% url 'bookAppointment' %}"><button class='btn btn-danger'>Book Appointments</button></a>
+              <a class="nav-link" href="{% url 'insurance_predictor' %}"><button class='btn btn-danger'>Insurance Predictor</button></a>
+            </div>
+          </div>
+          <a class="navbar-brand" href="{% url 'home' %}"><button class='btn btn-danger'>Logout</button></a>
+        </div>
+      </nav>
+    <h1>Insurance Predictor</h1>
+    <form method="POST" action="{% url 'insurance_predictor' %}">
+        {% csrf_token %}
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" required><br>
+        <label for="sex">Sex:</label>
+        <select id="sex" name="sex" required>
+            <option value="0">Male</option>
+            <option value="1">Female</option>
+        </select><br>
+        <label for="bmi">BMI:</label>
+        <input type="number" step="0.01" id="bmi" name="bmi" required><br>
+        <label for="children">Children:</label>
+        <input type="number" id="children" name="children" required><br>
+        <label for="smoker">Smoker:</label>
+        <select id="smoker" name="smoker" required>
+            <option value="0">No</option>
+            <option value="1">Yes</option>
+        </select><br>
+        <label for="region">Region:</label>
+        <select id="region" name="region" required>
+            <option value="0">Northeast</option>
+            <option value="1">Northwest</option>
+            <option value="2">Southeast</option>
+            <option value="3">Southwest</option>
+        </select><br>
+        <button type="submit">Predict</button>
+        {% if prediction %}
+            <h2>Predicted Charges: {{ prediction }}</h2>
+        {% endif %}
+    </form>
+</body>
+</html>

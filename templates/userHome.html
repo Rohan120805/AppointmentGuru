@@ -145,67 +145,6 @@
         color: white;
         font-size: 1.5em;
       }
-
-      .chatbot-button {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 50%;
-        width: 60px;
-        height: 60px;
-        font-size: 24px;
-        cursor: pointer;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .chatbox {
-        position: fixed;
-        bottom: 80px;
-        right: 20px;
-        width: 300px;
-        max-height: 400px;
-        background-color: white;
-        border: 1px solid #ccc;
-        border-radius: 10px;
-        padding: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        display: none;
-        flex-direction: column;
-    }
-
-    .chatbox-header {
-        font-weight: bold;
-        margin-bottom: 10px;
-    }
-
-    .chatbox-messages {
-        flex-grow: 1;
-        overflow-y: auto;
-        margin-bottom: 10px;
-    }
-
-    .chatbox-input {
-        display: flex;
-    }
-
-    .chatbox-input input {
-        flex-grow: 1;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-    }
-
-    .chatbox-input button {
-        padding: 10px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 15px;
-        margin-left: 5px;
-    }
     </style>
 </head>
 <body>
@@ -219,6 +158,7 @@
             <a class="nav-link" href="{% url 'userHome' %}"><img src="{% static 'Images/logo.png' %}" style="width: 75px; height: auto;"></a>
             <a class="nav-link" href="{% url 'yourAppointments' %}"><button class='btn btn-danger'>Your Appointments</button></a>
             <a class="nav-link" href="{% url 'bookAppointment' %}"><button class='btn btn-danger'>Book Appointments</button></a>
+            <a class="nav-link" href="{% url 'insurance_predictor' %}"><button class='btn btn-danger'>Insurance Predictor</button></a>
           </div>
         </div>
         <a class="navbar-brand" href="{% url 'home' %}"><button class='btn btn-danger'>Logout</button></a>
@@ -259,57 +199,8 @@
      </tbody>
    </table>
    {% endif %}
-
-   <button class="chatbot-button" onclick="toggleChatbox()">💬</button>
-    <!-- Chatbox -->
-    <div class="chatbox" id="chatbox">
-        <div class="chatbox-header">Chatbot</div>
-        <div class="chatbox-messages" id="chatboxMessages"></div>
-        <div class="chatbox-input">
-            <input type="text" id="chatboxInput" placeholder="Type a message...">
-            <button onclick="sendMessage()">Send</button>
-        </div>
-    </div>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script>
-        function toggleChatbox() {
-            const chatbox = document.getElementById('chatbox');
-            chatbox.style.display = chatbox.style.display === 'none' ? 'flex' : 'none';
-        }
-
-        function sendMessage() {
-            const userInput = document.getElementById('chatboxInput').value;
-            const chatboxMessages = document.getElementById('chatboxMessages');
-
-            // Display user message
-            const userMessage = document.createElement('div');
-            userMessage.textContent = 'You: ' + userInput;
-            chatboxMessages.appendChild(userMessage);
-
-            // Clear input
-            document.getElementById('chatboxInput').value = '';
-
-            // Send message to chatbot
-            fetch('/chatbot/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ message: userInput }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Display chatbot response
-                const chatbotResponse = document.createElement('div');
-                chatbotResponse.textContent = 'Chatbot: ' + data.response;
-                chatboxMessages.appendChild(chatbotResponse);
-
-                // Scroll to the bottom
-                chatboxMessages.scrollTop = chatboxMessages.scrollHeight;
-            });
-        }
-    </script>
       <script>
         function calculateBMI() {
             var weight = parseFloat(document.getElementById('weight').value);

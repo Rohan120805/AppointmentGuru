@@ -4,6 +4,10 @@ from datetime import date, timedelta
 from .models import Doctor, Customer, Appointment, Hospital
 from django.core.mail import send_mail
 from django.conf import settings
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.preprocessing import LabelEncoder
 
 def home(request):
   return render(request,'home.html',{'name':'Rohan'})
@@ -303,3 +307,33 @@ def dEditDetails(request):#todo
         DoctorHomePage.alpha(details, choice, value)
         return render(request, 'success.html', {"success":"Details updated in database", "choice":choice, "value":value})
     return render(request, 'doctorEditDetails.html', {"details":details})
+
+def insurance_predictor(request):
+    if request.method == 'POST':
+        age = int(request.POST.get('age'))
+        sex = int(request.POST.get('sex'))
+        bmi = float(request.POST.get('bmi'))
+        children = int(request.POST.get('children'))
+        smoker = int(request.POST.get('smoker'))
+        region = int(request.POST.get('region'))
+
+        dfa = pd.read_csv('AppointmentGuru/insurance.csv')
+        le = LabelEncoder()
+        dfa['sex'] = le.fit_transform(dfa['sex'])
+        dfa['smoker'] = le.fit_transform(dfa['smoker'])
+        dfa['region'] = le.fit_transform(dfa['region'])
+
+        X = dfa.drop('charges', axis=1)
+        y = dfa['charges']
+
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.01, random_state=42)
+        
+        new_data = pd.DataFrame({'age': [age], 'sex': [sex], 'bmi': [bmi], 'children': [children], 'smoker': [smoker], 'region': [region]})
+
+        rf_model = RandomForestRegressor(n_estimators=250, random_state=42)
+        rf_model.fit(X_train, y_train)
+        new_pred = rf_model.predict(new_data)
+        prediction=round(new_pred[0], 2)
+
+        return render(request, 'insurance.html', {'prediction': prediction})
+    return render(request, 'insurance.html')
