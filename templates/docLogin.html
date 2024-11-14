@@ -29,16 +29,17 @@
         }
 
         .button {
-            display: inline-block;
+            display: flex;
+            margin: 0 auto;
             padding: 10px 20px;
             font-size: 16px;
             font-weight: bold;
             text-decoration: none;
             color: #fff;
-            background-color: #0d6efd; /* Changed to Bootstrap primary button color */
+            background-color: #006E86;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.2s ease-in-out;
+            transition: box-shadow 0.2s ease-in-out, transform 0.2s ease-in-out;
         }
 
         .button:hover {
@@ -96,7 +97,7 @@
             {% elif invalid_authid %}
                 <p class="warning">Invalid Phone Number or mail-ID. Please try again.</p>
             {% endif %}
-
+            <br>
             <button class="button" type="submit">Login</button>
         </form>
     </div>

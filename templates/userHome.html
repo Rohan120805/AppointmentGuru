@@ -87,22 +87,23 @@
         }
 
         form {
-            width: 300px;
-            height: 300px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #333;
-            border-radius: 25px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-            transition: box-shadow 0.2s ease-in-out;
-        }
-
-        form:hover {
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
-            border-radius: 25px;
-            width: 320px;
-            height: 320px;
-        }
+          width: 300px;
+          height: 300px;
+          margin: 20px auto;
+          padding: 20px;
+          background-color: #333;
+          border-radius: 25px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+          transition: box-shadow 0.2s ease-in-out, width 0.2s ease-in-out, height 0.2s ease-in-out, border-radius 0.2s ease-in-out;
+          transition-delay: 0.1s;
+      }
+  
+      form:hover {
+          box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+          border-radius: 25px;
+          width: 320px;
+          height: 320px;
+      }
 
         input {
             width: 100%;
