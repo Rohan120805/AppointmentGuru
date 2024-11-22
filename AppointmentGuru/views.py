@@ -4,11 +4,9 @@ from datetime import date, timedelta
 from .models import Doctor, Customer, Appointment, Hospital
 from django.core.mail import send_mail
 from django.conf import settings
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error, r2_score
-from sklearn.preprocessing import LabelEncoder
 import joblib
+from django.core.serializers.json import DjangoJSONEncoder
+import json
 
 def home(request):
   return render(request,'home.html',{'name':'Rohan'})
@@ -219,8 +217,19 @@ def dLogin(request):
 
 def userAppointments(request):
     user = request.session.get('user')
-    appointments=Appointment.objects.all().filter(patientPhoneNumber=user["phoneNumber"])
-    return render(request, "yourAppointments.html", {'appointments': appointments})
+    appointments = Appointment.objects.all().filter(patientPhoneNumber=user["phoneNumber"])
+    appointments_list = list(appointments.values('doctorName', 'hospitalName', 'date', 'specialisation', 'time'))
+    for appointment in appointments_list:
+        appointment['title'] = f"{appointment['doctorName']}"
+        appointment['start'] = appointment['date']
+        appointment['description'] = f"Doctor Name: {appointment['doctorName']}\nSpecialisation: {appointment['specialisation']}\nHospital Name: {appointment['hospitalName']}\nSlot: {appointment['time']}"
+        del appointment['doctorName']
+        del appointment['hospitalName']
+        del appointment['date']
+        del appointment['specialisation']
+        del appointment['time']
+    appointments_json = json.dumps(appointments_list, cls=DjangoJSONEncoder)
+    return render(request, "yourAppointments.html", {'appointments_json': appointments_json})
 
 def uEditDetails(request):#todo
     details = request.session.get('details')
@@ -281,14 +290,26 @@ def selectSlot(request, doctorPhoneNumber):#success
         return render(request, 'success.html', {"success":f"Your appointment has been confirmed with Dr. {doctor.doctorName}", "choice":f"Date: {appointmentDate}", "value":f"Time: {slot}"})
     return render(request, 'slot.html', {"details":user, "tomorrow":date.today()+timedelta(days=1),"end":date.today()+timedelta(days=7), "phoneNumber":doctorPhoneNumber, "slots":slots})
 
-def doctorAppointments(request):#success
-    doctor=request.session.get('doctor')
-    fDate=request.POST.get('date')
+def doctorAppointments(request):
+    doctor = request.session.get('doctor')
+    fDate = request.POST.get('date')
     if fDate:
         appointments = Appointment.objects.all().filter(doctorName=doctor['name'], date=fDate)
-        return render(request, "doctorAppointments.html", {'appointments':appointments})
-    appointments = Appointment.objects.all().filter(doctorName=doctor['name'])
-    return render(request, "doctorAppointments.html", {'appointments':appointments})
+    else:
+        appointments = Appointment.objects.all().filter(doctorName=doctor['name'])
+    
+    appointments_list = list(appointments.values('patientName', 'date', 'time', 'patientMailId'))
+    for appointment in appointments_list:
+        appointment['title'] = f"{appointment['patientName']}"
+        appointment['start'] = appointment['date']
+        appointment['description'] = f"Patient Name: {appointment['patientName']}\nMail ID: {appointment['patientMailId']}\nSlot: {appointment['time']}"
+        del appointment['patientName']
+        del appointment['date']
+        del appointment['time']
+        del appointment['patientMailId']
+    
+    appointments_json = json.dumps(appointments_list, cls=DjangoJSONEncoder)
+    return render(request, "doctorAppointments.html", {'appointments_json': appointments_json})
 
 def todayAppointments(request):#success
     doctor=request.session.get('doctor')
