@@ -1,7 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 import pandas as pd
 from datetime import date, timedelta
-from .models import Doctor, Customer, Appointment, Hospital
+from .models import Doctor, Customer, Appointment, Hospital, Feedback
+from .forms import FeedbackForm
 from django.core.mail import send_mail
 from django.conf import settings
 import joblib
@@ -218,18 +219,27 @@ def dLogin(request):
 def userAppointments(request):
     user = request.session.get('user')
     appointments = Appointment.objects.all().filter(patientPhoneNumber=user["phoneNumber"])
-    appointments_list = list(appointments.values('doctorName', 'hospitalName', 'date', 'specialisation', 'time'))
+    appointments_list = list(appointments.values('doctorName', 'hospitalName', 'date', 'specialisation', 'time', 'doctorPhoneNumber','patientPhoneNumber', 'id'))
     for appointment in appointments_list:
+        feedback = Feedback.objects.filter(appointment_id=appointment['id']).first()
+        if feedback:
+            appointment['rating'] = feedback.rating
+            appointment['comments'] = feedback.comments
+        else:
+            appointment['rating'] = None
         appointment['title'] = f"{appointment['doctorName']}"
         appointment['start'] = appointment['date']
         appointment['description'] = f"Doctor Name: {appointment['doctorName']}\nSpecialisation: {appointment['specialisation']}\nHospital Name: {appointment['hospitalName']}\nSlot: {appointment['time']}"
-        del appointment['doctorName']
+        # del appointment['doctorName']
         del appointment['hospitalName']
-        del appointment['date']
+        # del appointment['date']
         del appointment['specialisation']
-        del appointment['time']
+        # del appointment['time']
+        del appointment['doctorPhoneNumber']
+        del appointment['patientPhoneNumber']
+        # del appointment['id']
     appointments_json = json.dumps(appointments_list, cls=DjangoJSONEncoder)
-    return render(request, "yourAppointments.html", {'appointments_json': appointments_json})
+    return render(request, "yourAppointments.html", {'appointments_json': appointments_json, 'appointments':appointments_list})
 
 def uEditDetails(request):#todo
     details = request.session.get('details')
@@ -347,3 +357,19 @@ def insurance_predictor(request):
 
         return render(request, 'insurance.html', {'prediction': prediction})
     return render(request, 'insurance.html')
+
+def submit_feedback(request, appointment_id):
+    appointment = get_object_or_404(Appointment, id=appointment_id)
+    if request.method == 'POST':
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            feedback = form.save(commit=False)
+            feedback.appointment = appointment
+            feedback.save()
+            return redirect('feedback_success')
+    else:
+        form = FeedbackForm()
+    return render(request, 'submit_feedback.html', {'form': form, 'appointment': appointment})
+
+def feedback_success(request):
+    return render(request, 'feedback_success.html')

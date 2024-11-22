@@ -14,4 +14,6 @@ urlpatterns=[
     path('doctorLogin/', views.dLogin, name='dLogin'),
     path('doctorLogin/doctorHome/doctorAppointments/', views.doctorAppointments, name='doctorAppointments'),
     path('doctorLogin/doctorHome/todayAppointments/', views.todayAppointments, name='todayAppointments'),
+    path('submit_feedback/<int:appointment_id>/', views.submit_feedback, name='submit_feedback'),
+    path('feedback_success/', views.feedback_success, name='feedback_success'),
 ]

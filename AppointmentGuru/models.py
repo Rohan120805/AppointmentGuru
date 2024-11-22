@@ -89,3 +89,12 @@ class Hospital(models.Model):
 
     def __str__(self):
         return f"{self.hospitalName} -> {self.branch}"
+    
+class Feedback(models.Model):
+    appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE)
+    rating = models.IntegerField(choices=[(i, i) for i in range(1, 6)])
+    comments = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.appointment.doctorName} -> {self.appointment.patientName}"

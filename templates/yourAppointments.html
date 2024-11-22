@@ -17,7 +17,7 @@
           }
         body {
             font-family: Arial, sans-serif;
-            background: url("{% static 'Images/yourAppointments.png' %}") no-repeat center center fixed;
+            background: linear-gradient(135deg, #004C5C, #00A4CC);
             background-size: cover;
             margin: 0;
             padding: 0;
@@ -61,6 +61,19 @@
             background-color: #006E86;
             transform: scale(1.2);
         }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
     </style>
 </head>
 <body>
@@ -85,6 +98,39 @@
         <h1 align='center'>Your Appointments</h1>
         <div id="calendar"></div>
     </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th><h4>Doctor Name</h4></th>
+                <th><h4>Date</h4></th>
+                <th><h4>Time</h4></th>
+                <th><h4>Rating</h4></th>
+                <th><h4>Comments</h4></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for appointment in appointments %}
+            <tr>
+                <td><h5>{{ appointment.doctorName }}</h5></td>
+                <td><h5>{{ appointment.date }}</h5></td>
+                <td><h5>{{ appointment.time }}</h5></td>
+                <td>
+                    {% if appointment.rating %}
+                        <h5>{{ appointment.rating }} stars</h5>
+                    {% else %}
+                        <a href="{% url 'submit_feedback' appointment.id %}" class="btn btn-secondary">Submit Feedback</a>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if appointment.comments %}
+                        <h5>{{ appointment.comments }}</h5>
+                    {% else %}
+                        <h5>Feedback not submitted.</h5>
+                    {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
