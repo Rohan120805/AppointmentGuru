@@ -6,6 +6,6 @@ class FeedbackForm(forms.ModelForm):
         model = Feedback
         fields = ['rating', 'comments']
         widgets = {
-            'rating': forms.RadioSelect(choices=[(i, i) for i in range(6)]),
+            'rating': forms.HiddenInput(),
             'comments': forms.Textarea(attrs={'rows': 4, 'cols': 40}),
         }
