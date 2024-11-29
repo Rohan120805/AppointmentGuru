@@ -219,7 +219,7 @@ def dLogin(request):
 def userAppointments(request):
     user = request.session.get('user')
     appointments = Appointment.objects.all().filter(patientPhoneNumber=user["phoneNumber"])
-    appointments_list = list(appointments.values('doctorName', 'hospitalName', 'date', 'specialisation', 'time', 'doctorPhoneNumber','patientPhoneNumber', 'id'))
+    appointments_list = list(appointments.values('doctorName', 'hospitalName', 'date', 'specialisation', 'time', 'doctorPhoneNumber','patientPhoneNumber', 'id', 'branch'))
     for appointment in appointments_list:
         feedback = Feedback.objects.filter(appointment_id=appointment['id']).first()
         if feedback:
@@ -229,7 +229,7 @@ def userAppointments(request):
             appointment['rating'] = None
         appointment['title'] = f"{appointment['doctorName']}"
         appointment['start'] = appointment['date']
-        appointment['description'] = f"Doctor Name: {appointment['doctorName']}\nSpecialisation: {appointment['specialisation']}\nHospital Name: {appointment['hospitalName']}\nSlot: {appointment['time']}"
+        appointment['description'] = f"Doctor Name: {appointment['doctorName']}\nSpecialisation: {appointment['specialisation']}\nHospital Name: {appointment['hospitalName']}\nBranch: {appointment['branch']}\nSlot: {appointment['time']}"
         # del appointment['doctorName']
         del appointment['hospitalName']
         # del appointment['date']
