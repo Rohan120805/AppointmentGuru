@@ -8,6 +8,7 @@ from django.conf import settings
 import joblib
 from django.core.serializers.json import DjangoJSONEncoder
 import json
+import random
 
 def home(request):
   return render(request,'home.html',{'name':'Rohan'})
@@ -100,18 +101,46 @@ def add_user(request):
         if invalid or userExists:
             return render(request, 'add_user.html', {'invalid': invalid, 'userExists': userExists})
         else:
-            customer = Customer(name=name, email=uemail, phoneNumber=phNum, age=age, gender=gender, password=pwd)
-            customer.save()
+            otp = random.randint(100000, 999999)
+            request.session['otp'] = otp
             user = {
             'name': name,
             'email': uemail,
             'phoneNumber': phNum,
             'age': age,
             'gender': gender,
+            'pwd': pwd,
             }
             request.session['user'] = user
-            return render(request, "userHome.html", {'result': user})
+            send_otp_email(uemail, otp)
+            return redirect('verify_otp')
     return render(request, 'add_user.html')
+
+def send_otp_email(email, otp):
+    subject = 'Your OTP for verification'
+    message = f'Your OTP for verification is {otp}'
+    from_email = settings.DEFAULT_FROM_EMAIL
+    recipient_list = [email]
+    send_mail(subject, message, from_email, recipient_list)
+
+def verify_otp(request):
+    if request.method == 'POST':
+        otp = request.POST.get('otp')
+        if otp == str(request.session.get('otp')):
+            user_data = request.session.get('user')
+            customer = Customer(
+                name=user_data['name'],
+                email=user_data['email'],
+                phoneNumber=user_data['phoneNumber'],
+                age=user_data['age'],
+                gender=user_data['gender'],
+                password=user_data['pwd'],
+            )
+            customer.save()
+            return render(request, 'userHome.html', {'result': user_data, 'requirements': daily(user_data["age"], user_data["gender"])})
+        else:
+            return render(request, 'otp.html', {'error': 'Invalid OTP'})
+    return render(request, 'otp.html')
 
 def add_doctor(request):
     if request.method == 'POST':
@@ -180,9 +209,13 @@ def uLogin(request):
             return render(request, 'userLogin.html', {'error': True})
     return render(request, 'userLogin.html')
 
+# AppointmentGuru/views.py
 def userHome(request):
     user = request.session.get('user')
-    return render(request, 'userHome.html', {'result': user, 'requirements': daily(user["age"], user["gender"])})
+    if user:
+        return render(request, 'userHome.html', {'result': user, 'requirements': daily(user["age"], user["gender"])})
+    else:
+        return redirect('uLogin')
 
 def dLogin(request):
     render(request, 'docLogin.html')
