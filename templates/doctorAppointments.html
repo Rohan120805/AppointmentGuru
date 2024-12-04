@@ -41,9 +41,9 @@
         .btn {
             background-color: #006E86;
             color: white;
-            padding: 10px 20px;
+            padding: 15px 20px;
             border: none;
-            border-radius: 20px;
+            border-radius: 25px;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.3s ease;
         }
@@ -71,6 +71,7 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
+              <img src="{% static 'Images/logo.png' %}" style="width: 75px; height: auto;">
               <a class="nav-link" href="{% url 'doctorAppointments' %}"><button class='btn btn-danger'>Your Appointments</button></a>
               <a class="nav-link" href="{% url 'todayAppointments' %}"><button class='btn btn-danger'>Today's Appointments</button></a>
             </div>

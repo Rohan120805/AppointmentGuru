@@ -31,9 +31,9 @@
         .btn {
             background-color: #006E86;
             color: white;
-            padding: 10px 20px;
+            padding: 15px 20px;
             border: none;
-            border-radius: 20px;
+            border-radius: 25px;
             cursor: pointer;
             transition: background-color 0.3s ease, transform 0.3s ease;
         }
@@ -66,7 +66,7 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <a class="nav-link" href="{% url 'userHome' %}"><img src="{% static 'Images/logo.png' %}" style="width: 75px; height: auto;"></a>
+                <a class="nav-link" href="{% url 'userHome' %}"><img src="{% static 'Images/logo.png' %}" style="width: 55px; height: auto;"></a>
                 <a href="{% url 'uLogin' %}"><button type="button" class="btn btn-success">User Login</button></a>&nbsp;&nbsp;
                 <a href="{% url 'dLogin' %}"><button type="button" class="btn btn-success">Doctor Login</button></a>&nbsp;&nbsp;
                 <a href="{% url 'userSignUp' %}"><button type="button" class="btn btn-success">User Signup</button></a>&nbsp;&nbsp;
