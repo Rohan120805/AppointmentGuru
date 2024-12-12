@@ -406,3 +406,5 @@ def submit_feedback(request, appointment_id):
 
 def feedback_success(request):
     return render(request, 'feedback_success.html')
+
+#code completed
