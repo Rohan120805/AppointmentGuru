@@ -175,15 +175,22 @@
                 <input type="submit" value="Filter" class="btn btn-primary">
             </div>
         </div>
+        <br>
+        <div class="row">
+            <div class="col-md-12">
+                <input type="text" id="searchBar" class="form-control" placeholder="Search doctors by name, specialization, hospital, or branch">
+            </div>
+        </div>
     </form>
-    <div class="row">
+    <div class="row" id="doctorList">
         {% for doctor in doctors %}
-        <div class="col-md-5 mx-auto">
-            <div class="card" style="width: 30rem; border-radius: 25px;">
+        <div class="col-md-4 mx-auto doctor-card" data-name="{{ doctor.doctorName }}" data-specialization="{{ doctor.specialisation }}" data-hospital="{{ doctor.hospitalName }}" data-branch="{{ doctor.branch }}" style="doctor-card-align: center;">
+            <div class="card" style="width: 29rem; border-radius: 25px;">
                 <div class="card-body">
                     Name: {{doctor.doctorName}}<br>
                     Specialisation: {{doctor.specialisation}}<br>
-                    Hospital: {{doctor.hospitalName}}, {{doctor.branch}}<br>
+                    Hospital: {{doctor.hospitalName}}<br>
+                    Branch: {{doctor.branch}}<br>
                     Appointment Slots: {{doctor.time}}<br>
                     <a href={% url "selectSlot" doctor.phoneNumber %}><button type="button" class="btn btn-success">Book Appointment</button></a>
                 </div>
@@ -192,6 +199,25 @@
         </div>
         {% endfor %}
     </div>
+    <script>
+        document.getElementById('searchBar').addEventListener('input', function() {
+            var searchQuery = this.value.toLowerCase();
+            console.log('Search Query:', searchQuery);
+            var doctorCards = document.querySelectorAll('.doctor-card');
+            doctorCards.forEach(function(card) {
+                var name = card.getAttribute('data-name').toLowerCase();
+                var specialization = card.getAttribute('data-specialization').toLowerCase();
+                var hospital = card.getAttribute('data-hospital').toLowerCase();
+                var branch = card.getAttribute('data-branch').toLowerCase();
+                console.log('Doctor:', name, specialization, hospital, branch);
+                if (name.includes(searchQuery) || specialization.includes(searchQuery) || hospital.includes(searchQuery) || branch.includes(searchQuery)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
