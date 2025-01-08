@@ -214,7 +214,9 @@
         function calculateBMI() {
             var weight = parseFloat(document.getElementById('weight').value);
             var height = parseFloat(document.getElementById('height').value);
-            if (weight && height) {
+            if(weight<=0||height<=0){
+              document.getElementById('bmiResult').innerText="Please give valid input.";
+            } else if (weight>0 && height>0) {
                 var bmi = weight / (height * height);
                 var bmiMessage = 'Your BMI is ' + bmi.toFixed(2) + '. ';
                 if (bmi < 18) {
