@@ -7,14 +7,21 @@
     <title>Verify OTP</title>
     <style>
         body {
-            background: linear-gradient(135deg, #004C5C, #00A4CC);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
             font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(135deg, #004C5C, #007B9E,  #00A4CC);
+            background-size: 400% 400%;
+            animation: gradientAnimation 5s ease infinite;
+            margin: 0;
+            padding: 0;
         }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
         .container {
             text-align: center;
             background-color: #ffffff;

@@ -45,9 +45,17 @@
             body {
                 font-family: Arial, sans-serif;
                 text-align: center;
-                background: url("{% static 'Images/mainHome.png' %}") no-repeat center center fixed;
-                background-size: cover;
-                transition: background-color 0.5s ease-in-out;
+                background: linear-gradient(135deg, #004C5C, #007B9E,  #00A4CC);
+                background-size: 400% 400%;
+                animation: gradientAnimation 5s ease infinite;
+                margin: 0;
+                padding: 0;
+            }
+    
+            @keyframes gradientAnimation {
+                0% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+                100% { background-position: 0% 50%; }
             }
     
             .container {
