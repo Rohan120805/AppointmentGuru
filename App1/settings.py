@@ -132,5 +132,5 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'appointmentguruhyd@gmail.com'
-EMAIL_HOST_PASSWORD = 'nows lsoj sxyz qobd'
+EMAIL_HOST_PASSWORD = 'xqbc ouiq pckv zebe'  # App Password without spaces (replace with new one if needed)
 DEFAULT_FROM_EMAIL = 'appointmentguruhyd@gmail.com'

@@ -33,7 +33,6 @@ nest-asyncio==1.6.0
 numpy==2.1.0
 openai==0.28.0
 packaging==24.1
-pandas==2.2.2
 parso==0.8.4
 platformdirs==4.3.2
 prompt_toolkit==3.0.47
